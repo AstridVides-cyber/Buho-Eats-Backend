@@ -1,24 +1,23 @@
 import { Router } from "express";
-import {
-    createFavoriteController,
-    getFavoritesByUserController,
-    removeFavoriteController,
+import { 
+    createFavoriteController, 
+    getFavoritesByUserIdController, 
+    deleteFavoriteController 
 } from "../controllers/favorite.controllers.js";
-import {
-    validateCreateFavorite,
-    validateGetFavoritesByUser,
-    validateDeleteFavorite,
+import { 
+    validateCreateFavorite, 
+    validateDeleteFavorite 
 } from "../validators/favorite.validator.js";
 
 const favoriteRouter = Router();
 
-// Ruta para crear un favorito
+// Crear favorito
 favoriteRouter.post("/create", validateCreateFavorite, createFavoriteController);
 
-// Ruta para obtener los favoritos de un usuario
-favoriteRouter.get("/:idUser", validateGetFavoritesByUser, getFavoritesByUserController);
+// Obtener favoritos de un usuario
+favoriteRouter.get("/:idUser", getFavoritesByUserIdController);
 
-// Ruta para eliminar un favorito
-favoriteRouter.delete("/:idUser/:idRestaurant", validateDeleteFavorite, removeFavoriteController);
+// Eliminar favorito
+favoriteRouter.delete("/:idUser/:favoriteId", validateDeleteFavorite, deleteFavoriteController);
 
 export { favoriteRouter };
