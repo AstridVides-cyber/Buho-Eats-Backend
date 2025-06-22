@@ -30,7 +30,7 @@ const userSchema = new Schema({
     favorites: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Favorite',  // Referencia a los favoritos
+            ref: 'Favorite',  // Referencia a los favoritos:D
         },
     ],
 });
