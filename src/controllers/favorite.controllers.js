@@ -1,34 +1,54 @@
-import { createFavorite, getFavoritesByUserId, deleteFavorite } from "../services/favorite.service.js";
+import { Favorite } from "../models/favorite.model.js";
 import createError from "http-errors";
 
-// Crear favorito
-export const createFavoriteController = async (req, res, next) => {
-    const data = req.body;
+// Crear un nuevo favorito
+export const addRestaurantToFavoritesController = async (req, res, next) => {
+    const { id } = req.params; // id del usuario
+    const { idRestaurant } = req.body; // id del restaurante a agregar
+
     try {
-        const createdFavorite = await createFavorite(data);
-        res.status(201).json({ message: "Favorito creado con éxito", data: createdFavorite });
+        // Verificamos si ya existe un favorito para este usuario
+        let favorite = await Favorite.findOne({ idUser: id });
+
+        if (!favorite) {
+            // Si no existe, creamos uno nuevo
+            favorite = new Favorite({
+                idUser: id,
+                idRestaurant: [idRestaurant],
+            });
+            await favorite.save();
+        } else {
+            // Si ya existe, solo agregamos el restaurante
+            if (!favorite.idRestaurant.includes(idRestaurant)) {
+                favorite.idRestaurant.push(idRestaurant);
+                await favorite.save();
+            }
+        }
+
+        res.status(200).json({ success: true, message: "Restaurante agregado a favoritos" });
     } catch (error) {
         next(error);
     }
 };
 
-// Obtener favoritos de un usuario
-export const getFavoritesByUserIdController = async (req, res, next) => {
-    const { idUser } = req.params;
-    try {
-        const favorites = await getFavoritesByUserId(idUser);
-        res.status(200).json({ message: "Favoritos obtenidos", data: favorites });
-    } catch (error) {
-        next(error);
-    }
-};
+// Eliminar un restaurante de los favoritos
+export const removeRestaurantFromFavoritesController = async (req, res, next) => {
+    const { id, restaurantId } = req.params; // id del usuario y restaurante
 
-// Eliminar un favorito
-export const deleteFavoriteController = async (req, res, next) => {
-    const { idUser, favoriteId } = req.params;
     try {
-        await deleteFavorite(idUser, favoriteId);
-        res.status(200).json({ message: "Favorito eliminado correctamente" });
+        const favorite = await Favorite.findOne({ idUser: id });
+
+        if (!favorite) {
+            throw createError(404, "No se encontraron favoritos para este usuario");
+        }
+
+        // Eliminamos el restaurante de los favoritos
+        favorite.idRestaurant = favorite.idRestaurant.filter(
+            (restaurant) => restaurant.toString() !== restaurantId
+        );
+
+        await favorite.save();
+        res.status(200).json({ success: true, message: "Restaurante eliminado de favoritos" });
     } catch (error) {
         next(error);
     }
