@@ -3,8 +3,8 @@ import createError from "http-errors";
 
 // Crear un nuevo favorito
 export const addRestaurantToFavoritesController = async (req, res, next) => {
-    const { id } = req.params; // id del usuario
-    const { idRestaurant } = req.body; // id del restaurante a agregar
+    const { id } = req.params; 
+    const { idRestaurant } = req.body; 
 
     try {
         // Verificamos si ya existe un favorito para este usuario
@@ -33,7 +33,7 @@ export const addRestaurantToFavoritesController = async (req, res, next) => {
 
 // Eliminar un restaurante de los favoritos
 export const removeRestaurantFromFavoritesController = async (req, res, next) => {
-    const { id, restaurantId } = req.params; // id del usuario y restaurante
+    const { id, restaurantId } = req.params; 
 
     try {
         const favorite = await Favorite.findOne({ idUser: id });
