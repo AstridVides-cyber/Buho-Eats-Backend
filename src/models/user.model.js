@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from 'mongoose';
 
 const userSchema = new Schema({
     name: {
@@ -23,15 +23,15 @@ const userSchema = new Schema({
         required: false,
     },
     rol: {
-    type: String,
+        type: String,
         required: true,
-        enum: ['cliente', 'restAdmin', 'sysAdmin'], 
+        enum: ['cliente', 'restAdmin', 'sysAdmin'],
     },
     favorites: [
-    {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Restaurant",
-    },
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Favorite',  // Referencia a los favoritos
+        },
     ],
 });
 
