@@ -1,9 +1,10 @@
 import { Promotion } from "../models/promotion.model.js";
+import createError from "http-errors";
 
-// Crear promoción
-export const createPromotion = async (promotionData) => {
+// Crear una nueva promoción
+export const createPromotion = async (data) => {
     try {
-        const promotion = new Promotion(promotionData);
+        const promotion = new Promotion(data);
         const savedPromotion = await promotion.save();
         return savedPromotion;
     } catch (error) {
@@ -12,7 +13,7 @@ export const createPromotion = async (promotionData) => {
 };
 
 // Obtener todas las promociones
-export const findAllPromotions = async () => {
+export const getAllPromotions = async () => {
     try {
         const promotions = await Promotion.find();
         return promotions;
@@ -21,27 +22,17 @@ export const findAllPromotions = async () => {
     }
 };
 
-// Obtener una promoción por ID
-export const findPromotionById = async (id) => {
+// Obtener promociones de un restaurante específico
+export const getPromotionsByRestaurant = async (restaurantId) => {
     try {
-        const promotion = await Promotion.findById(id);
-        return promotion;
+        const promotions = await Promotion.find({ restaurantId });
+        return promotions;
     } catch (error) {
-        throw new Error(`Error al obtener la promoción por ID: ${error.message}`);
+        throw new Error(`Error al obtener las promociones del restaurante: ${error.message}`);
     }
 };
 
-// Actualizar una promoción
-export const updatePromotionById = async (id, promotionData) => {
-    try {
-        const updatedPromotion = await Promotion.findByIdAndUpdate(id, promotionData, { new: true });
-        return updatedPromotion;
-    } catch (error) {
-        throw new Error(`Error al actualizar la promoción: ${error.message}`);
-    }
-};
-
-// Eliminar una promoción
+// Eliminar una promoción por ID
 export const deletePromotionById = async (id) => {
     try {
         const deletedPromotion = await Promotion.findByIdAndDelete(id);
