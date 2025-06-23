@@ -22,6 +22,8 @@ mainRouter.use('/api/usuario/:id/favoritos', favoriteRouter);
 // Ruta para restaurantes:D
 mainRouter.use('/api/restaurante', restaurantRouter); 
 
+
+
 // Ruta para el menú de un restaurante:D
 mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter); 
 

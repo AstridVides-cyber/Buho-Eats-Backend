@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const promotionSchema = new Schema({
     title: {
@@ -11,14 +11,25 @@ const promotionSchema = new Schema({
     },
     price: {
         type: {
-            antes: Number,
-            ahora: Number
+            before: { 
+                type: Number, 
+                required: true 
+            },
+            after: { 
+                type: Number, 
+                required: true 
+            }
         },
-        required: false
+        required: true
     },
     rules: {
         type: String,
-        required: true,
+        required: true
+    },
+    restaurantId: {  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant',
+        required: true
     }
 });
 
