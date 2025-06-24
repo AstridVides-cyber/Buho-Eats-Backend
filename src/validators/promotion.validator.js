@@ -1,110 +1,93 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
 
-// Validación para crear una promoción
+//Validacion al crear la promo
 export const validateCreatePromotion = [
     body("title")
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("El título de la promoción es obligatorio"),
+        .withMessage("El título es obligatorio"),
 
     body("description")
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("La descripción de la promoción es obligatoria"),
-
-    body("price")
-        .exists()
-        .notEmpty()
-        .isObject()
-        .withMessage("El precio debe ser un objeto con los campos 'before' y 'now'"),
+        .withMessage("La descripción es obligatoria"),
 
     body("price.before")
         .exists()
-        .notEmpty()
         .isNumeric()
-        .withMessage("El precio original (before) debe ser un número"),
+        .withMessage("El precio anterior debe ser un número"),
 
     body("price.now")
         .exists()
-        .notEmpty()
         .isNumeric()
-        .withMessage("El precio con descuento (now) debe ser un número"),
+        .withMessage("El precio ahora debe ser un número"),
 
     body("rules")
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("Las reglas de la promoción son obligatorias"),
+        .withMessage("Las reglas son obligatorias"),
 
-    (req, res, next) => {
-        validateResult(req, res, next);
-    }
+    body("restaurantId")
+        .exists()
+        .isMongoId()
+        .withMessage("El id del restaurante es obligatorio y debe ser un ObjectId válido"),
+    (req, res, next) => validateResult(req, res, next),
 ];
 
-// Validación para obtener una promoción por ID
+//Validacion al obtener una promotion
 export const validateGetPromotionById = [
-    param('id')
+    param("promotionId")
         .exists()
         .isMongoId()
-        .withMessage('Debe ser un id válido de Mongo'),
-
-    (req, res, next) => {
-        validateResult(req, res, next);
-    },
+        .withMessage("El id de la promoción debe ser un ObjectId válido"),
+    (req, res, next) => validateResult(req, res, next),
 ];
 
-// Validación para actualizar una promoción
+//Validation al actualizar una promotion
 export const validateUpdatePromotion = [
-    param('id')
+    param("promotionId")
         .exists()
         .isMongoId()
-        .withMessage('Debe ser un id válido de Mongo'),
+        .withMessage("El id de la promoción debe ser un ObjectId válido"),
 
     body("title")
         .optional()
         .isString()
-        .withMessage("El título de la promoción debe ser una cadena de texto"),
+        .withMessage("El título debe ser una cadena de texto"),
 
     body("description")
         .optional()
         .isString()
-        .withMessage("La descripción de la promoción debe ser una cadena de texto"),
-
-    body("price")
-        .optional()
-        .isObject()
-        .withMessage("El precio debe ser un objeto con los campos 'before' y 'now'"),
+        .withMessage("La descripción debe ser una cadena de texto"),
 
     body("price.before")
         .optional()
         .isNumeric()
-        .withMessage("El precio original (before) debe ser un número"),
+        .withMessage("El precio anterior debe ser un número"),
 
     body("price.now")
         .optional()
         .isNumeric()
-        .withMessage("El precio con descuento (now) debe ser un número"),
+        .withMessage("El precio ahora debe ser un número"),
 
     body("rules")
         .optional()
         .isString()
-        .withMessage("Las reglas de la promoción son obligatorias"),
+        .withMessage("Las reglas deben ser una cadena de texto"),
 
-    (req, res, next) => {
-        validateResult(req, res, next);
-    }
+    (req, res, next) => validateResult(req, res, next),
 ];
 
-// Validación para eliminar una promoción
+//Validacion al eliminar una promotion
 export const validateDeletePromotion = [
-    param("id")
+    param("promotionId")
         .exists()
         .isMongoId()
-        .withMessage("El ID debe ser un ObjectId válido"),
-    (req, res, next) => {
-        validateResult(req, res, next);
-    }
+        .withMessage("El id de la promoción debe ser un ObjectId válido"),
+
+    (req, res, next) => validateResult(req, res, next),
 ];
