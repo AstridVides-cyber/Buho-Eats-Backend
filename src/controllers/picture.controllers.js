@@ -10,37 +10,37 @@ import createError from "http-errors";
 
 // Guardar nueva imagen
 export const saveImageController = async (req, res, next) => {
-    const { url, idRestaurant } = req.body; // Extraer los datos del cuerpo de la solicitud
+    const { url, idLocal } = req.body; // Extraer los datos del cuerpo de la solicitud
 
     try {
-        const picture = await saveImage(url, idRestaurant);
+        const picture = await saveImage(url, idLocal);
         res.status(201).json({ success: true, message: "Imagen creada correctamente", data: picture });
     } catch (error) {
         next(error);
     }
 };
 
-// Agregar imágenes a un Restaurant
+// Agregar imágenes a un local
 export const addPicturesController = async (req, res, next) => {
     const { picturesToAdd } = req.body; // Extraer las imágenes a agregar
-    const { id } = req.params; // Extraer el id del Restaurant desde los parámetros de la URL
+    const { id } = req.params; // Extraer el id del local desde los parámetros de la URL
 
     try {
-        const updatedRestaurant = await addPictures(picturesToAdd, id);
-        res.status(200).json({ success: true, message: "Imágenes agregadas correctamente", data: updatedRestaurant });
+        const updatedLocal = await addPictures(picturesToAdd, id);
+        res.status(200).json({ success: true, message: "Imágenes agregadas correctamente", data: updatedLocal });
     } catch (error) {
         next(error);
     }
 };
 
-// Eliminar imágenes de un Restaurant
+// Eliminar imágenes de un local
 export const removePicturesController = async (req, res, next) => {
     const { picturesToRemove } = req.body; // Extraer las imágenes a eliminar
-    const { id } = req.params; // Extraer el id del Restaurant desde los parámetros de la URL
+    const { id } = req.params; // Extraer el id del local desde los parámetros de la URL
 
     try {
-        const updatedRestaurant = await removePictures(picturesToRemove, id);
-        res.status(200).json({ success: true, message: "Imágenes eliminadas correctamente", data: updatedRestaurant });
+        const updatedLocal = await removePictures(picturesToRemove, id);
+        res.status(200).json({ success: true, message: "Imágenes eliminadas correctamente", data: updatedLocal });
     } catch (error) {
         next(error);
     }
