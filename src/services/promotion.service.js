@@ -1,6 +1,6 @@
 import { Promotion } from "../models/promotion.model.js";
 
-//Crear la promocion
+// Crear promoción
 export const createPromotion = async (data) => {
     try {
         const newPromotion = new Promotion(data);
@@ -11,7 +11,7 @@ export const createPromotion = async (data) => {
     }
 };
 
-//Obtiene todas las promociones
+// Obtener todas las promociones
 export const findAllPromotions = async () => {
     try {
         const promotions = await Promotion.find();
@@ -21,7 +21,7 @@ export const findAllPromotions = async () => {
     }
 };
 
-//Obtiene una promocion
+// Obtener promoción por ID
 export const findPromotionById = async (id) => {
     try {
         const promotion = await Promotion.findById(id);
@@ -31,7 +31,17 @@ export const findPromotionById = async (id) => {
     }
 };
 
-//Elimina la promocion
+// Actualizar promoción
+export const updatePromotion = async (id, data) => {
+    try {
+        const updatedPromotion = await Promotion.findByIdAndUpdate(id, data, { new: true });
+        return updatedPromotion;
+    } catch (error) {
+        throw new Error(`Error al actualizar la promoción: ${error.message}`);
+    }
+};
+
+// Eliminar promoción
 export const deletePromotion = async (id) => {
     try {
         const deletedPromotion = await Promotion.findByIdAndDelete(id);
