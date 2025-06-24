@@ -22,14 +22,15 @@ mainRouter.use('/api/usuario/:id/favoritos', favoriteRouter);
 // Ruta para restaurantes:D
 mainRouter.use('/api/restaurante', restaurantRouter); 
 
+// Promociones Rutas:D
+mainRouter.use('/api/restaurante', promotionRouter);
+
 // Ruta para el menú de un restaurante:D
 mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter); 
 
 // Rutas de reseñas:D
 mainRouter.use('api/restaurante/:id/review', reviewRouter); 
 
-// Promociones Rutas:D
-mainRouter.use('/api/restaurante/:id/promocion', promotionRouter);
 
 // Ruta para los platos dentro de un menú
 mainRouter.use('/api/restaurante/:id/menu/plato', plateRouter);
