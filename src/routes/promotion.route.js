@@ -1,27 +1,24 @@
 import { Router } from "express";
 import {
     createPromotionController,
-    findAllPromotionsController,
-    findPromotionByIdController,
     updatePromotionController,
     deletePromotionController,
 } from "../controllers/promotion.controllers.js";
+import { 
+    validateCreatePromotion, 
+    validateUpdatePromotion, 
+    validateDeletePromotion 
+} from "../validators/promotion.validator.js";
 
 const promotionRouter = Router();
 
 // Crear promoción
-promotionRouter.post("/create", createPromotionController);
-
-// Obtener todas las promociones
-promotionRouter.get("/all", findAllPromotionsController);
-
-// Obtener promoción por ID
-promotionRouter.get("/:id", findPromotionByIdController);
+promotionRouter.post("/create", validateCreatePromotion, createPromotionController);
 
 // Actualizar promoción
-promotionRouter.put("/:id", updatePromotionController);  // Ruta para actualizar promoción
+promotionRouter.patch("/:idPromo", validateUpdatePromotion, updatePromotionController);
 
 // Eliminar promoción
-promotionRouter.delete("/:id", deletePromotionController);
+promotionRouter.delete("/:idPromo", validateDeletePromotion, deletePromotionController);
 
 export { promotionRouter };

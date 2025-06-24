@@ -31,7 +31,7 @@ mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter);
 mainRouter.use('/api/review', reviewRouter); 
 
 // Promociones Rutas:D
-mainRouter.use('/api/promotion', promotionRouter);
+mainRouter.use('/api/restaurante/:id/promocion', promotionRouter);
 
 // Agregar rutas de TimeRange:D
 mainRouter.use("/api/timeRange", timeRangeRouter); 
