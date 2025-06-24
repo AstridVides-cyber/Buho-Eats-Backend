@@ -7,7 +7,6 @@ import {
     getPicturesController,
     removePicturesController,
 } from "../controllers/picture.controllers.js";
-import { upload } from "../middlewares/multer.middleware.js";
 import { 
     validateAddPictures, 
     validateCreatePicture, 
@@ -15,6 +14,7 @@ import {
     validateRemovePictures 
 } from "../validators/picture.validator.js";
 import { verifyToken } from "../middlewares/jwt.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const pictureRouter = Router();
 
