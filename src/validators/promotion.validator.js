@@ -1,5 +1,5 @@
 import { body, param } from "express-validator";
-import { validateResult } from "../utils/helpers/validate.helper.js";  
+import { validateResult } from "../utils/helpers/validate.helper.js"; 
 
 // Validación para crear una promoción
 export const validateCreatePromotion = [
