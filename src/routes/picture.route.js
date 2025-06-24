@@ -18,7 +18,7 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const pictureRouter = Router();
 
-pictureRouter.post("/create/:idLocal", verifyToken, validateCreatePicture, createPictureController);
+pictureRouter.post("/create/:idRestaurant", verifyToken, validateCreatePicture, createPictureController);
 pictureRouter.get("/getAll", getPicturesController);
 pictureRouter.get("/getOne/:id", findPictureByIdController);
 pictureRouter.put("/add", verifyToken, validateAddPictures, upload.array('url', 5), addPicturesController);
