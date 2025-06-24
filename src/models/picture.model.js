@@ -1,15 +1,15 @@
-import mongoose, {Schema, model} from 'mongoose';
+import mongoose, { model, Schema } from "mongoose";
 
 const picture = new Schema({
     url: {
-        type: String,
+        type: [String],
         required: true,
     },
-    idRestaurant: { 
+    idRestaurant: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true
-    } 
+    }
 });
 
 export const Picture = model('Picture', picture);
