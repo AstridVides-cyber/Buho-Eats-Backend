@@ -1,5 +1,5 @@
 import { 
-    createPicture, 
+    saveImage, 
     findPictureById, 
     findAllPictures, 
     deletePictureById 
@@ -7,10 +7,10 @@ import {
 import createError from "http-errors";
 
 // Crear una nueva imagen
-export const createPictureController = async (req, res, next) => {
+export const saveImageController = async (req, res, next) => {
     const { url, idRestaurant } = req.body;
     try {
-        const picture = await createPicture({ url, idRestaurant });
+        const picture = await saveImage({ url, idRestaurant });
         res.status(201).json({ message: "Imagen creada correctamente", data: picture });
     } catch (error) {
         next(error);

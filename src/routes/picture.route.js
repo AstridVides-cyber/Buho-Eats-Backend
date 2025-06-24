@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { 
-    createPictureController, 
+    saveImageController, 
     getAllPicturesController, 
     getPictureByIdController, 
     deletePictureByIdController 
@@ -9,7 +9,7 @@ import {
 const pictureRouter = Router();
 
 // Crear una nueva imagen
-pictureRouter.post('/create', createPictureController);
+pictureRouter.post('/create', saveImageController);
 
 // Obtener todas las imágenes
 pictureRouter.get('/all', getAllPicturesController);
