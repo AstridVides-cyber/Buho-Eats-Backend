@@ -1,6 +1,4 @@
 import { Promotion } from "../models/promotion.model.js";
-import { Restaurant } from "../models/restaurante.model.js";
-
 
 // Crear promoción
 export const createPromotion = async (promotionData) => {
@@ -13,7 +11,7 @@ export const createPromotion = async (promotionData) => {
     }
 };
 
-// Obtener promociones de un restaurante
+// Obtener promociones por restaurante
 export const getPromotionsByRestaurant = async (restaurantId) => {
     try {
         const promotions = await Promotion.find({ restaurantId });
@@ -23,15 +21,20 @@ export const getPromotionsByRestaurant = async (restaurantId) => {
     }
 };
 
+// Obtener promoción por ID
+export const getPromotionById = async (id) => {
+    try {
+        const promotion = await Promotion.findById(id);
+        return promotion;
+    } catch (error) {
+        throw new Error(`Error al obtener la promoción: ${error.message}`);
+    }
+};
 
 // Actualizar promoción
-export const updatePromotion = async (restaurantId, promotionId, promotionData) => {
+export const updatePromotion = async (id, promotionData) => {
     try {
-        const updatedPromotion = await Promotion.findOneAndUpdate(
-            { _id: promotionId, restaurantId },
-            promotionData,
-            { new: true }
-        );
+        const updatedPromotion = await Promotion.findByIdAndUpdate(id, promotionData, { new: true });
         return updatedPromotion;
     } catch (error) {
         throw new Error(`Error al actualizar la promoción: ${error.message}`);
@@ -39,15 +42,9 @@ export const updatePromotion = async (restaurantId, promotionId, promotionData) 
 };
 
 // Eliminar promoción
-export const deletePromotion = async (restaurantId, promotionId) => {
+export const deletePromotion = async (id) => {
     try {
-        const deletedPromotion = await Promotion.findOneAndDelete({ _id: promotionId, restaurantId });
-
-        
-        await Restaurant.findByIdAndUpdate(restaurantId, {
-            $pull: { promociones: promotionId }
-        });
-
+        const deletedPromotion = await Promotion.findByIdAndDelete(id);
         return deletedPromotion;
     } catch (error) {
         throw new Error(`Error al eliminar la promoción: ${error.message}`);
