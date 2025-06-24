@@ -1,21 +1,28 @@
 import { Promotion } from "../models/promotion.model.js";
 import { Restaurant } from "../models/restaurante.model.js";
 
+
 // Crear promoción
-export const createPromotion = async (restaurantId, promotionData) => {
-    const promotion = new Promotion({ ...promotionData, restaurantId });
-
+export const createPromotion = async (promotionData) => {
     try {
-        const savedPromotion = await promotion.save();
-        await Restaurant.findByIdAndUpdate(restaurantId, {
-            $push: { promociones: savedPromotion._id }
-        });
-
+        const newPromotion = new Promotion(promotionData);
+        const savedPromotion = await newPromotion.save();
         return savedPromotion;
     } catch (error) {
         throw new Error(`Error al crear la promoción: ${error.message}`);
     }
 };
+
+// Obtener promociones de un restaurante
+export const getPromotionsByRestaurant = async (restaurantId) => {
+    try {
+        const promotions = await Promotion.find({ restaurantId });
+        return promotions;
+    } catch (error) {
+        throw new Error(`Error al obtener las promociones: ${error.message}`);
+    }
+};
+
 
 // Actualizar promoción
 export const updatePromotion = async (restaurantId, promotionId, promotionData) => {
