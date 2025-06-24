@@ -16,18 +16,18 @@ import {
 const promotionRouter = Router();
 
 // Crear promoción para un restaurante 
-promotionRouter.post("/:id/promocion/create", validateCreatePromotion, createPromotionController);
+promotionRouter.post("/create", validateCreatePromotion, createPromotionController);
 
 // Obtener todas las promociones de un restaurante 
-promotionRouter.get("/:id/promocion", getPromotionsController);
+promotionRouter.get("/all", getPromotionsController);
 
 // Obtener una promoción por ID 
-promotionRouter.get("/:id/promocion/:promotionId", validateGetPromotionById, getPromotionByIdController);
+promotionRouter.get("/:promotionId", validateGetPromotionById, getPromotionByIdController);
 
 // Actualizar una promoción 
-promotionRouter.put("/:id/promocion/:promotionId", validateUpdatePromotion, updatePromotionController);
+promotionRouter.put("/:promotionId", validateUpdatePromotion, updatePromotionController);
 
 // Eliminar una promoción 
-promotionRouter.delete("/:id/promocion/:promotionId", validateDeletePromotion, deletePromotionController);
+promotionRouter.delete("/:promotionId", validateDeletePromotion, deletePromotionController);
 
 export { promotionRouter };

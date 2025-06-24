@@ -5,7 +5,7 @@ import { pictureRouter } from "./picture.route.js";
 import { reviewRouter } from "./review.route.js";
 import { favoriteRouter } from "./favorite.route.js";
 import { promotionRouter } from "./promotion.route.js";
-import { menuRouter } from "./menu.route.js";
+import { menuRouter } from "./menu.route.js";//Falta
 import { plateRouter } from "./plate.route.js";
 import { timeRangeRouter } from "./date.route.js";
 import { blockRouter } from "./block.route.js";
@@ -22,7 +22,7 @@ mainRouter.use('/api/usuario/:id/favoritos', favoriteRouter);
 // Ruta para restaurantes:D
 mainRouter.use('/api/restaurante', restaurantRouter); 
 
-// Ruta para el menú de un restaurante:D
+// Ruta para el menú de un restaurante
 mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter); 
 
 // Promociones Rutas:D
