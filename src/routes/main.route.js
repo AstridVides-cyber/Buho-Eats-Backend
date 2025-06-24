@@ -31,7 +31,6 @@ mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter);
 // Rutas de reseñas:D
 mainRouter.use('api/restaurante/:id/review', reviewRouter); 
 
-
 // Ruta para los platos dentro de un menú
 mainRouter.use('/api/restaurante/:id/menu/plato', plateRouter);
 
@@ -43,6 +42,8 @@ mainRouter.use('/api/restaurante', blockRouter);
 
 // Rutas de coordenadas:D
 mainRouter.use("/api/coordenadas", coordinateRouter);
+
+
 
 
 // Ruta para las imágenes
