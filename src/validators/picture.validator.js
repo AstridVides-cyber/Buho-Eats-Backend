@@ -1,86 +1,87 @@
 import { body, param } from "express-validator";
-import { validateResult } from "../utils/helpers/validate.helper.js";
-import { PICTURE } from "../utils/regex/regex.js";
+import { validateResult } from "../utils/helpers/validate.helper.js"; 
 
-//Validacion de crear imagen
-export const validateCreatePicture = [
-    param("idRestaurant")
-        .exists()
-        .notEmpty()
-        .isMongoId()
-        .withMessage("El idRestaurant debe ser un ID de Mongo valido"),
-
+// Validación para crear una imagen
+export const validateCreateImage = [
     body("url")
         .exists()
-        .isArray()
+        .notEmpty()
         .withMessage("La URL de la imagen es obligatoria")
-        .matches(PICTURE)
-        .withMessage("La imagen deber ser de extension jpg, jpeg o png"),
-
-    (req, res, next) => {
-        validateResult(req, res, next);
-    },
-];
-
-//Validacion al agregar imagen
-export const validateAddPictures = [
-    body("id")
+        .isURL()
+        .withMessage("La URL proporcionada no es válida"),
+    body("idRestaurant")
         .exists()
         .notEmpty()
         .isMongoId()
-        .withMessage("El id debe ser un ID de Mongo valido"),
-
-    body("url").custom((value, { req }) => {
-        if (!req.files || req.files.length === 0) {
-        throw new Error("Debe enviar al menos una imagen");
-        }
-        req.files.forEach((file) => {
-        const validExtensions = [".jpg", ".jpeg", ".png"];
-        const fileExtension = path.extname(file.originalname);
-        if (!validExtensions.includes(fileExtension)) {
-            throw new Error(
-            `Solo se permiten imágenes con las extensiones: ${validExtensions.join(
-                ", "
-            )}`
-            );
-        }
-    });
-    return true;
-}),
+        .withMessage("El id del Restaurant debe ser un ObjectId válido"),
 
     (req, res, next) => {
         validateResult(req, res, next);
-    },
+    }
 ];
 
-//Validacion de remover imagenes
-export const validateRemovePictures = [
-    body("id")
+// Validación para agregar imágenes a un Restaurant
+export const validateAddImages = [
+    param("id")
         .exists()
-        .notEmpty()
         .isMongoId()
-        .withMessage("Debe ser un ID de Mongo valido"),
-
-    body("url")
+        .withMessage("El id del Restaurant debe ser un ObjectId válido"),
+    body("picturesToAdd")
         .isArray()
-        .withMessage("Las URLs deben ir en un arreglo")
-        .notEmpty()
-        .withMessage("Debe enviar al menos una imagen para eliminar"),
-
-    (req, res, next) => {
-    validateResult(req, res, next);
-    },
-];
-
-//Validacion de eliminar imagen
-export const validateDeletePicture = [
-    body("id")
-        .exists()
-        .notEmpty()
-        .isMongoId()
-        .withMessage("Debe ser un ID de Mongo válido"),
+        .withMessage("Las imágenes deben ser un arreglo")
+        .custom(value => {
+            if (value.some(item => typeof item !== "string" || !item.startsWith("http"))) {
+                throw new Error("Cada imagen debe ser una URL válida");
+            }
+            return true;
+        }),
 
     (req, res, next) => {
         validateResult(req, res, next);
-    },
+    }
+];
+
+// Validación para eliminar imágenes de un Restaurant
+export const validateRemoveImages = [
+    param("id")
+        .exists()
+        .isMongoId()
+        .withMessage("El id del Restaurant debe ser un ObjectId válido"),
+    body("picturesToRemove")
+        .isArray()
+        .withMessage("Las imágenes deben ser un arreglo")
+        .custom(value => {
+            if (value.some(item => typeof item !== "string" || !item.startsWith("http"))) {
+                throw new Error("Cada imagen debe ser una URL válida");
+            }
+            return true;
+        }),
+
+    (req, res, next) => {
+        validateResult(req, res, next);
+    }
+];
+
+// Validación para obtener una imagen por id
+export const validateGetImageById = [
+    param("id")
+        .exists()
+        .isMongoId()
+        .withMessage("El id de la imagen debe ser un ObjectId válido"),
+
+    (req, res, next) => {
+        validateResult(req, res, next);
+    }
+];
+
+// Validación para eliminar una imagen
+export const validateDeleteImage = [
+    param("id")
+        .exists()
+        .isMongoId()
+        .withMessage("El id de la imagen debe ser un ObjectId válido"),
+
+    (req, res, next) => {
+        validateResult(req, res, next);
+    }
 ];
