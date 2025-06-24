@@ -7,12 +7,11 @@ import {
 
 // Crear una promoción
 export const createPromotionController = async (req, res, next) => {
-    const { id } = req.params;  
+    const { restaurantId } = req.params;  
     const data = req.body;
     try {
-        const promotion = await createPromotion(id, data);
+        const promotion = await createPromotion(restaurantId, data);
         res.status(201).json({
-            success: true,
             message: "Promoción creada correctamente",
             data: promotion
         });
@@ -23,13 +22,12 @@ export const createPromotionController = async (req, res, next) => {
 
 // Actualizar promoción
 export const updatePromotionController = async (req, res, next) => {
-    const { id, idPromo } = req.params;  
+    const { restaurantId, idPromo } = req.params;  
     const data = req.body;
     try {
-        const promotion = await updatePromotion(id, idPromo, data);
+        const promotion = await updatePromotion(restaurantId, idPromo, data);
         if (!promotion) throw createError(404, "No se encontró la promoción");
         res.status(200).json({
-            success: true,
             message: "Promoción actualizada correctamente",
             data: promotion
         });
@@ -40,9 +38,9 @@ export const updatePromotionController = async (req, res, next) => {
 
 // Eliminar promoción
 export const deletePromotionController = async (req, res, next) => {
-    const { id, idPromo } = req.params;  
+    const { restaurantId, idPromo } = req.params;  
     try {
-        const deletedPromotion = await deletePromotion(id, idPromo);
+        const deletedPromotion = await deletePromotion(restaurantId, idPromo);
         res.status(200).json({
             success: true,
             message: "Promoción eliminada correctamente",
