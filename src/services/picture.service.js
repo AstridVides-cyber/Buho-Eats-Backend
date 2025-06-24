@@ -1,9 +1,9 @@
 import { Picture } from "../models/picture.model.js";
 
 //Aguarda la imagen
-export const saveImage = async (url, idLocal) => {
+export const saveImage = async (url, idRestaurant) => {
     try {
-        const newPicture = new Picture({ url, idLocal });
+        const newPicture = new Picture({ url, idRestaurant });
         const picture = await newPicture.save();
 
         return picture;
