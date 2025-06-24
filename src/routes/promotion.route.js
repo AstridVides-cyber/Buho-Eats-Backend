@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     createPromotionController,
+    getPromotionsController,
     updatePromotionController,
     deletePromotionController,
 } from "../controllers/promotion.controllers.js";
@@ -12,8 +13,11 @@ import {
 
 const promotionRouter = Router();
 
-// Crear promoción
-promotionRouter.post("/create", validateCreatePromotion, createPromotionController);
+// Crear promoción para un restaurante 
+promotionRouter.post("/:id/promocion/create", createPromotionController);
+
+// Obtener todas las promociones de un restaurante 
+promotionRouter.get("/:id/promocion", getPromotionsController);
 
 // Actualizar promoción
 promotionRouter.patch("/:idPromo", validateUpdatePromotion, updatePromotionController);
