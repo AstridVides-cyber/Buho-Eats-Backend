@@ -20,9 +20,9 @@ promotionRouter.post("/:id/promocion/create", createPromotionController);
 promotionRouter.get("/:id/promocion", getPromotionsController);
 
 // Actualizar promoción
-promotionRouter.patch("/:idPromo", validateUpdatePromotion, updatePromotionController);
+promotionRouter.patch("/:idPromocion", validateUpdatePromotion, updatePromotionController);
 
 // Eliminar promoción
-promotionRouter.delete("/:idPromo", validateDeletePromotion, deletePromotionController);
+promotionRouter.delete("/:idPromocion", validateDeletePromotion, deletePromotionController);
 
 export { promotionRouter };

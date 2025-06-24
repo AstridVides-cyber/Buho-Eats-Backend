@@ -29,7 +29,7 @@ mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter);
 mainRouter.use('api/restaurante/:id/review', reviewRouter); 
 
 // Promociones Rutas:D
-mainRouter.use('/api/restaurante/:id/promotion', promotionRouter);
+mainRouter.use('/api/restaurante/:id/promocion', promotionRouter);
 
 // Ruta para los platos dentro de un menú
 mainRouter.use('/api/restaurante/:id/menu/plato', plateRouter);
