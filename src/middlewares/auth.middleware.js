@@ -1,7 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
-import createError  from 'http-errors';
-import { User } from '../models/user.model.js';
-import "dotenv/config"
+import createError from 'http-errors';
+import "dotenv/config";
 
 export const client = new OAuth2Client(
     process.env.CLIENT_ID,
@@ -10,25 +9,22 @@ export const client = new OAuth2Client(
 );
 
 export const verifyGoogleToken = async (req, res, next) => {
+  //Se obtiene la id del token
     const { id_token } = req.body;
 
-    if (!id_token) {
+    if (!id_token)
         return next(createError(400, 'No se a proporcionado el token'));
-    }
 
     try {
         const ticket = await client.verifyIdToken({
-            id_token,
-            audience: process.env.CLIENT_ID,
+        id_token,
+        audience: process.env.CLIENT_ID,
         });
 
         const payload = ticket.getPayload();
-        // Buscar el usuario por su Google ID (payload.sub)
-        let user = await User.findOne({ googleId: payload.sub });
         req.user = payload;
         next();
-    }catch (error) {
-        next(createError(500, `Hubo un error al validar token: ${error.message}`));
-        
+    } catch (error) {
+        throw new Error(`Hubo un error al validar el token: ${error.message}`);
     }
 };
