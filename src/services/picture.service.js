@@ -1,11 +1,11 @@
 import { Picture } from "../models/picture.model.js";
 
-//Guardala imagen
-export const saveImage = async (url, idRestaurant) => {
+//Aguarda la imagen
+export const saveImage = async (url, idLocal) => {
     try {
-        const newPicture = new Picture({ url, idRestaurant});
+        const newPicture = new Picture({ url, idLocal });
         const picture = await newPicture.save();
-        
+
         return picture;
     } catch (error) {
         throw new Error(`Hubo un error al crear la imagen: ${error.message}`);
@@ -15,41 +15,41 @@ export const saveImage = async (url, idRestaurant) => {
 //Agrega la imagen
 export const addPictures = async (picturesToAdd, id) => {
     try {
-         // Agregar nuevas imágenes si hay elementos en picturesToAdd
-    await Picture.findByIdAndUpdate(id, {
+        // Agregar nuevas imágenes si hay elementos en picturesToAdd
+        await Picture.findByIdAndUpdate(id, {
         $push: {
-          url: { $each: picturesToAdd }, // Agrega los nuevos ids al campo de referencias
+            url: { $each: picturesToAdd }, // Agrega los nuevos ids al campo de referencias
         },
-    });
+        });
     } catch (error) {
         throw new Error(`Hubo un error al agregar las imagene: ${error.message}`);
     }
 };
 
-//Elimina la imagen
+//Removerlo de la lista de imagenes
 export const removePictures = async (picturesToRemove, id) => {
     try {
         // Eliminara imagenes si hay elementos en picturesToRemove
         const removed = await Picture.findByIdAndUpdate(
-            id,
-            {
-                $pull: {
-                url: { $in: picturesToRemove }, // Eliminar fotos por url que coincidan en el arreglo
-                },
+        id,
+        {
+            $pull: {
+            url: { $in: picturesToRemove }, // Eliminar fotos por url que coincidan en el arreglo
             },
-            {
-                new: true,
-                runValidators: true,
-            } 
+        },
+        {
+            new: true,
+            runValidators: true,
+        } 
         );
-    
+
         return removed;
-        } catch (error) {
-            throw new Error(`Hubo un error al eliminar las imagenes: ${error}`);
-        }
+    } catch (error) {
+        throw new Error(`Hubo un error al eliminar las imagenes: ${error}`);
+    }
 };
 
-//Obtener todas las images
+//Obtener todas imagenes
 export const findAllPictures = async () => {
     try {
         const pictures = await Picture.find();
@@ -60,7 +60,7 @@ export const findAllPictures = async () => {
     }
 };
 
-//Obtener una imagen por id
+//Obtener la imagen por id
 export const findPictureById = async (id) => {
     try {
         const picture = await Picture.findById(id);
@@ -71,7 +71,7 @@ export const findPictureById = async (id) => {
     }
 };
 
-//Eliminar una imagen por id
+//Eliminar imagen de la base de datos
 export const deletePictureById = async (id) => {
     try {
         const pictureDeleted = await Picture.findByIdAndDelete(id);
