@@ -1,18 +1,18 @@
 import { Promotion } from "../models/promotion.model.js";
 
-// Crear promoción
-export const createPromotion = async (promotionData) => {
+//Crear promocion
+export const createPromotion = async (data) => {
     try {
-        const newPromotion = new Promotion(promotionData);
-        const savedPromotion = await newPromotion.save();
+        const promotion = new Promotion(data);
+        const savedPromotion = await promotion.save();
         return savedPromotion;
     } catch (error) {
         throw new Error(`Error al crear la promoción: ${error.message}`);
     }
 };
 
-// Obtener promociones por restaurante
-export const getPromotionsByRestaurant = async (restaurantId) => {
+//Obtener las promociones por ID
+export const getPromotionsByRestaurantId = async (restaurantId) => {
     try {
         const promotions = await Promotion.find({ restaurantId });
         return promotions;
@@ -21,30 +21,30 @@ export const getPromotionsByRestaurant = async (restaurantId) => {
     }
 };
 
-// Obtener promoción por ID
-export const getPromotionById = async (id) => {
+//Obtener la promocion por ID
+export const getPromotionById = async (promotionId) => {
     try {
-        const promotion = await Promotion.findById(id);
+        const promotion = await Promotion.findById(promotionId);
         return promotion;
     } catch (error) {
-        throw new Error(`Error al obtener la promoción: ${error.message}`);
+        throw new Error(`Error al obtener la promoción por ID: ${error.message}`);
     }
 };
 
-// Actualizar promoción
-export const updatePromotion = async (id, promotionData) => {
+//Actualizar la promocion
+export const updatePromotion = async (promotionId, data) => {
     try {
-        const updatedPromotion = await Promotion.findByIdAndUpdate(id, promotionData, { new: true });
+        const updatedPromotion = await Promotion.findByIdAndUpdate(promotionId, data, { new: true });
         return updatedPromotion;
     } catch (error) {
         throw new Error(`Error al actualizar la promoción: ${error.message}`);
     }
 };
 
-// Eliminar promoción
-export const deletePromotion = async (id) => {
+//Eliminar la promocion
+export const deletePromotion = async (promotionId) => {
     try {
-        const deletedPromotion = await Promotion.findByIdAndDelete(id);
+        const deletedPromotion = await Promotion.findByIdAndDelete(promotionId);
         return deletedPromotion;
     } catch (error) {
         throw new Error(`Error al eliminar la promoción: ${error.message}`);
