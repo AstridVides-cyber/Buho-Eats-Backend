@@ -6,22 +6,28 @@ import {
     updatePromotionController, 
     deletePromotionController 
 } from "../controllers/promotion.controllers.js";
+import { 
+    validateCreatePromotion, 
+    validateGetPromotionById, 
+    validateUpdatePromotion, 
+    validateDeletePromotion 
+} from "../validators/promotion.validator.js";
 
 const promotionRouter = Router();
 
-// Crear promoción para un restaurante (POST)
-promotionRouter.post("/:id/promocion/create", createPromotionController);
+// Crear promoción para un restaurante 
+promotionRouter.post("/:id/promocion/create", validateCreatePromotion, createPromotionController);
 
-// Obtener todas las promociones de un restaurante (GET)
+// Obtener todas las promociones de un restaurante 
 promotionRouter.get("/:id/promocion", getPromotionsController);
 
-// Obtener una promoción por ID (GET)
-promotionRouter.get("/:id/promocion/:promotionId", getPromotionByIdController);
+// Obtener una promoción por ID 
+promotionRouter.get("/:id/promocion/:promotionId", validateGetPromotionById, getPromotionByIdController);
 
-// Actualizar una promoción (PATCH)
-promotionRouter.patch("/:id/promocion/:promotionId", updatePromotionController);
+// Actualizar una promoción 
+promotionRouter.put("/:id/promocion/:promotionId", validateUpdatePromotion, updatePromotionController);
 
-// Eliminar una promoción (DELETE)
-promotionRouter.delete("/:id/promocion/:promotionId", deletePromotionController);
+// Eliminar una promoción 
+promotionRouter.delete("/:id/promocion/:promotionId", validateDeletePromotion, deletePromotionController);
 
 export { promotionRouter };
