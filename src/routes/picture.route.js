@@ -13,10 +13,10 @@ const pictureRouter = Router();
 // Crear una imagen
 pictureRouter.post('/create', saveImageController);
 
-// Agregar imágenes a un local
+// Agregar imágenes a un Restaurant
 pictureRouter.post('/:id/add', addPicturesController);
 
-// Eliminar imágenes de un local
+// Eliminar imágenes de un Restaurant
 pictureRouter.delete('/:id/remove', removePicturesController);
 
 // Obtener todas las imágenes
