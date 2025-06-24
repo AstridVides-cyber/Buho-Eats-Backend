@@ -1,32 +1,31 @@
 import { Router } from "express";
 import { 
-    saveImageController, 
-    getAllPicturesController, 
-    getPictureByIdController, 
-    deletePictureByIdController 
+    saveImageController,
+    addPicturesController,
+    removePicturesController,
+    findAllPicturesController,
+    findPictureByIdController,
+    deletePictureByIdController
 } from "../controllers/picture.controllers.js";
-import { upload } from "../middleware/multer.middleware.js";
-import { 
-    validateAddPictures, 
-    validateCreatePicture, 
-    validateDeletePicture, 
-    validateRemovePictures 
-} from "../validators/picture.validator.js";
 
 const pictureRouter = Router();
 
-// Crear una nueva imagen
-pictureRouter.post("/create/:idRestaurant", validateCreatePicture, saveImageController);
+// Crear una imagen
+pictureRouter.post('/create', saveImageController);
+
+// Agregar imágenes a un local
+pictureRouter.post('/:id/add', addPicturesController);
+
+// Eliminar imágenes de un local
+pictureRouter.delete('/:id/remove', removePicturesController);
 
 // Obtener todas las imágenes
-pictureRouter.get("/getAll", getAllPicturesController);
+pictureRouter.get('/all', findAllPicturesController);
 
-// Obtener una imagen específica por ID
-pictureRouter.get("/getOne/:id", getPictureByIdController);
+// Obtener una imagen por ID
+pictureRouter.get('/:id', findPictureByIdController);
 
 // Eliminar una imagen por ID
-pictureRouter.delete("/delete", validateDeletePicture, deletePictureController);
-
-pictureRouter.delete("/remove", validateRemovePictures,upload.array('url', 10), removePicturesController);
+pictureRouter.delete('/:id', deletePictureByIdController);
 
 export { pictureRouter };
