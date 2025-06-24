@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { 
     createPromotionController, 
-    getPromotionsController, 
     getPromotionByIdController, 
     updatePromotionController, 
     deletePromotionController 
@@ -17,9 +16,6 @@ const promotionRouter = Router();
 
 // Crear promoción para un restaurante 
 promotionRouter.post("/create", validateCreatePromotion, createPromotionController);
-
-// Obtener todas las promociones de un restaurante 
-promotionRouter.get("/all", getPromotionsController);
 
 // Obtener una promoción por ID 
 promotionRouter.get("/:promotionId", validateGetPromotionById, getPromotionByIdController);
