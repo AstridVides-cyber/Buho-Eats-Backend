@@ -1,19 +1,18 @@
 import { Promotion } from "../models/promotion.model.js";
-import createError from "http-errors";
 
-// Crear una nueva promoción
+//Crear la promocion
 export const createPromotion = async (data) => {
     try {
-        const promotion = new Promotion(data);
-        const savedPromotion = await promotion.save();
+        const newPromotion = new Promotion(data);
+        const savedPromotion = await newPromotion.save();
         return savedPromotion;
     } catch (error) {
         throw new Error(`Error al crear la promoción: ${error.message}`);
     }
 };
 
-// Obtener todas las promociones
-export const getAllPromotions = async () => {
+//Obtiene todas las promociones
+export const findAllPromotions = async () => {
     try {
         const promotions = await Promotion.find();
         return promotions;
@@ -22,18 +21,18 @@ export const getAllPromotions = async () => {
     }
 };
 
-// Obtener promociones de un restaurante específico
-export const getPromotionsByRestaurant = async (restaurantId) => {
+//Obtiene una promocion
+export const findPromotionById = async (id) => {
     try {
-        const promotions = await Promotion.find({ restaurantId });
-        return promotions;
+        const promotion = await Promotion.findById(id);
+        return promotion;
     } catch (error) {
-        throw new Error(`Error al obtener las promociones del restaurante: ${error.message}`);
+        throw new Error(`Error al obtener la promoción: ${error.message}`);
     }
 };
 
-// Eliminar una promoción por ID
-export const deletePromotionById = async (id) => {
+//Elimina la promocion
+export const deletePromotion = async (id) => {
     try {
         const deletedPromotion = await Promotion.findByIdAndDelete(id);
         return deletedPromotion;
