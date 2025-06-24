@@ -97,3 +97,14 @@ export const validateUpdatePromotion = [
         validateResult(req, res, next);
     }
 ];
+
+// Validación para eliminar una promoción
+export const validateDeletePromotion = [
+    param("id")
+        .exists()
+        .isMongoId()
+        .withMessage("El ID debe ser un ObjectId válido"),
+    (req, res, next) => {
+        validateResult(req, res, next);
+    }
+];
