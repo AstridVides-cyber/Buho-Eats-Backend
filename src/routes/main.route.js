@@ -37,9 +37,6 @@ mainRouter.use('/api/restaurante/:id/menu/plato', plateRouter);
 // Agregar rutas de TimeRange:D
 mainRouter.use("/api/timeRange", timeRangeRouter); 
 
-// Ruta para gestionar los favoritos:D
-mainRouter.use('/api/favorite', favoriteRouter);
-
 // Bloqueo Rutas:D
 mainRouter.use('/api/restaurante', blockRouter);
 
