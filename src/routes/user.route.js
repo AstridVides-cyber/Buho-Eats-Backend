@@ -25,7 +25,7 @@ const userRouter = Router();
 // Crear usuario:D
 userRouter.post("/create", validateCreateUser,  upload.single('picture'), createUserController);
 
-userRouter.post('/login', validateLogin, generateTokenController);
+//userRouter.post('/login', validateLogin, generateTokenController);// Falta poner su validacion
 
 // Ruta para obtener todos los usuarios:D
 userRouter.get("/all", getAllUsersController);
