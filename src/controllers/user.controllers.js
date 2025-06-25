@@ -60,6 +60,45 @@ export const generateTokenController = async (req, res, next) => {
     }
 };
 
+//
+export const googleCallBackController = async (req, res, next) => {
+    const { code } = req.query;
+    try {
+    if (!code)
+        throw new Error(`No se ubtuvo un codigo`)
+    
+    const { tokens } = await client.getToken(code);
+    client.setCredentials(tokens);
+
+    const userData = await getUserData(tokens.access_token);
+
+    const existingUser = await findUserByEmail(userData.email, true);
+    const jwtToken = await getToken(userData, null, true);
+
+        if (existingUser) {
+                res.status(200).json({
+                message: "Se inicio sesion correctamente",
+                data: userData,
+                token: jwtToken,
+            });
+        } else {
+                const data = {
+                name: userData.given_name,
+                email: userData.email,
+                rol: "cliente",
+            };
+            await saveUser(data, null);
+                res.status(200).json({
+                message: "Se autentico exitosamente",
+                data: userData,
+                token: jwtToken,
+            });
+        }
+        } catch (error) {
+        next(error);
+        }
+};
+
 // Obtener todos los usuarios
 export const getAllUsersController = async (req, res, next) => {
     try {
@@ -95,18 +134,18 @@ export const getUserByIdController = async (req, res, next) => {
 export const updateUserController = async (req, res, next) => {
     const picture = req.file ? req.file.filename : null;
     const { email } = req.params;
-    //let userData = req.body;
+    let userData = req.body;
 
     try {
-        /*if (picture)
+        if (picture)
             userData = {
                 ...userData,
                 picture: picture,
             };
             
-        console.log(userData);*/
+        console.log(userData);
 
-        const updatedUser = await updateUserByEmail(email, /*userData,*/ picture);
+        const updatedUser = await updateUserByEmail(email, userData, picture);
 
         if (!updatedUser) throw createError(404, `Usuario no encontrado ${email}`);
 

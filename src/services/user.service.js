@@ -53,18 +53,7 @@ export const getToken = async (user, password) => {
         
             return token;
         }
-        /*
-        if(oauth) {
-        const { _id, name } = user;
-        const token = jwt.sign({
-            _id,
-            name,
-            exp: expires
-        }, JWT_SECRET);
-
-        return token;
-    } else throw new Error("Las contraseñas no coinciden");
-         */
+        
     } catch (error) {
         throw new Error(`Hubo un error al obtener el token: ${error.message}`);
     }
