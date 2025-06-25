@@ -60,7 +60,7 @@ export const generateTokenController = async (req, res, next) => {
     }
 };
 
-//
+/*
 export const googleCallBackController = async (req, res, next) => {
     const { code } = req.query;
     try {
@@ -97,7 +97,7 @@ export const googleCallBackController = async (req, res, next) => {
         } catch (error) {
         next(error);
         }
-};
+};*/
 
 // Obtener todos los usuarios
 export const getAllUsersController = async (req, res, next) => {
@@ -145,7 +145,7 @@ export const updateUserController = async (req, res, next) => {
             
         console.log(userData);
 
-        const updatedUser = await updateUserByEmail(email, /*userData,*/ picture);
+        const updatedUser = await updateUserByEmail(email, userData, picture);
 
         if (!updatedUser) throw createError(404, `Usuario no encontrado ${email}`);
 

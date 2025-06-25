@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import { client } from "../middlewares/auth.middleware.js";
 import { User } from "../models/user.model.js";
 import { compare, encrypt } from "../utils/helpers/handleBcrypt.js";
@@ -11,6 +9,7 @@ import jwt from "jsonwebtoken";
 import { Favorite } from "../models/favorite.model.js"; 
 import { Restaurant } from "../models/restaurante.model.js";
 import createError from "http-errors"; 
+
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const expires = Math.floor(Date.now() / 1000) + (2 * 60 * 60);
@@ -42,14 +41,14 @@ export const saveUser = async (user, password, picture) => {
     }
 };
 
-//Generando un token
+// Generación de un token
 export const getToken = async (user, password) => {
     try {
         if (!await compare(password, user.password)) {
             throw new Error("Contraseña incorrecta");
         }
         const { _id, name } = user;
-        const expires = Math.floor(Date.now() / 1000) + (2 * 60 * 60); 
+        const expires = Math.floor(Date.now() / 1000) + (2 * 60 * 60); // Expiración a 2 horas
 
         const token = jwt.sign({
             _id,
@@ -58,7 +57,6 @@ export const getToken = async (user, password) => {
         }, JWT_SECRET);
 
         return token;
-        
     } catch (error) {
         console.error(error);
         throw new Error(`Hubo un error al obtener el token: ${error.message}`);
