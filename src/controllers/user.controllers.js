@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { client } from "../middleware/auth.middleware.js";
+import { client } from "../middlewares/auth.middleware.js";
 import { User } from "../models/user.model.js";
 import { Favorite } from "../models/favorite.model.js"; 
 import { 
