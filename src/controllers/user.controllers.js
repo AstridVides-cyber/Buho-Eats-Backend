@@ -145,7 +145,7 @@ export const updateUserController = async (req, res, next) => {
             
         console.log(userData);
 
-        const updatedUser = await updateUserByEmail(email, userData, picture);
+        const updatedUser = await updateUserByEmail(email, /*userData,*/ picture);
 
         if (!updatedUser) throw createError(404, `Usuario no encontrado ${email}`);
 

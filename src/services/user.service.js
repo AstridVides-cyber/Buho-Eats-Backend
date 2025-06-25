@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { client } from "../middlewares/auth.middleware.js";
 import { User } from "../models/user.model.js";
 import { compare, encrypt } from "../utils/helpers/handleBcrypt.js";
@@ -43,18 +45,22 @@ export const saveUser = async (user, password, picture) => {
 //Generando un token
 export const getToken = async (user, password) => {
     try {
-        if (await compare(password, user.password)) {
-            const { _id, name } = user;
-            const token = jwt.sign({
-                _id,
-                name,
-                exp: Date.now() + 60 * 1000
-            }, JWT_SECRET);
-        
-            return token;
+        if (!await compare(password, user.password)) {
+            throw new Error("Contraseña incorrecta");
         }
+        const { _id, name } = user;
+        const expires = Math.floor(Date.now() / 1000) + (2 * 60 * 60); 
+
+        const token = jwt.sign({
+            _id,
+            name,
+            exp: expires
+        }, JWT_SECRET);
+
+        return token;
         
     } catch (error) {
+        console.error(error);
         throw new Error(`Hubo un error al obtener el token: ${error.message}`);
     }
 };
