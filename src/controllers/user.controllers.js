@@ -40,25 +40,35 @@ export const createUserController = async (req, res, next) => {
     }
 };
 
-//Obteniendo el token
+// Obteniendo el token
 export const generateTokenController = async (req, res, next) => {
     const { email, password } = req.body;
     try {
+        // Buscar al usuario por su email
         const user = await findUserByEmail(email);
-        if (!user) throw new createError(404, "No se encontro al usuario");
-    
-        const token = await getToken(user, password);
-    
-        if(!token)
-            throw new createError(404, 'No se encontro el token de acceso');
         
+        // Si el usuario no existe, retornar un error de autenticación
+        if (!user) {
+            throw createError(404, "No se encontró al usuario");
+        }
+
+        // Generar el token con la función del servicio
+        const token = await getToken(user, password);
+        
+        // Si no se genera el token, retornar un error
+        if (!token) {
+            throw createError(401, "No se pudo generar el token de acceso");
+        }
+
         res.status(200).json({
-        token: token,
-    });
+            message: "Token generado exitosamente",
+            token: token,
+        });
     } catch (error) {
         next(error);
     }
 };
+
 
 /*
 export const googleCallBackController = async (req, res, next) => {
