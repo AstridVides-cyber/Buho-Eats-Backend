@@ -1,11 +1,11 @@
-//import { client } from "../middlewares/auth.middleware.js";
+import { client } from "../middlewares/auth.middleware.js";
 import { User } from "../models/user.model.js";
 import { compare, encrypt } from "../utils/helpers/handleBcrypt.js";
 import fs from "fs";
-import jwt from "jsonwebtoken";
 import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import jwt from "jsonwebtoken";
 import { Favorite } from "../models/favorite.model.js"; 
 import { Restaurant } from "../models/restaurante.model.js";
 import createError from "http-errors"; 
