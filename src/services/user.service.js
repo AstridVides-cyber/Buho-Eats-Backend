@@ -226,7 +226,7 @@ export const removeRestaurantFromFavorites = async (idUser, idRestaurant) => {
         user.favorites = user.favorites.filter(favorite => favorite.toString() !== idRestaurant);
         await user.save();
     
-        return user;
+        return user; 
     } catch (error) {
         throw new Error(`Error al eliminar el restaurante de favoritos: ${error.message}`);
     }
