@@ -81,11 +81,12 @@ export const getAllUsers = async () => {
     }
 };
 
-//Obtener un usuario por id
-export const findUserById = async (id) => {
+//Obtener un usuario por email
+export const findUserByEmail = async (email, toCreate) => {
     try {
-        const user = await User.findById(id).populate("favorites");
-        if (!user) throw createError(404, "Usuario no encontrado");
+        const user = await User.findOne({ email: email }).populate("favorites");
+
+        if (!user && !toCreate) throw  new Error( "Usuario no encontrado");
     
         return user;
     } catch (error) {
@@ -93,19 +94,47 @@ export const findUserById = async (id) => {
     }
 };
 
-// Actualizar un usuario por ID
-export const updateUserById = async (id, data) => {
+// Actualizar un usuario por email
+export const updateUserByEmail = async (email, data, picture) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, data, {
-            new: true,
-            runValidators: true,
-        });
+        const oldData = await findUserByEmail(email);
     
-        if (!updatedUser) throw createError(404, "Usuario no encontrado");
+        if (!oldData) throw new Error(`No se encontro al usuario`);
+
+        if (picture && oldData.picture) {
+            const filePath = path.join(
+                __dirname,
+                "..",
+                "..",
+                "uploads",
+                oldData.picture
+            );
+        fs.unlink(filePath, (error) => {
+            if (error)
+                throw new Error(
+                `Hubo un error al querer eliminar la imagen: ${error.message}`
+                );
+            });
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { email: email },
+            {
+                ...data,
+            },
+            {
+              new: true, // Devuelve el usuario actualizado
+                runValidators: true,
+            }
+        );
     
         return updatedUser;
+    
     } catch (error) {
-        throw new Error(`Error al actualizar el usuario: ${error.message}`);
+        console.error(error);
+    throw new Error(
+        `Hubo un error al actualizar los datos del usuario ${error}`
+        );
     }
 };
 
@@ -113,14 +142,27 @@ export const updateUserById = async (id, data) => {
 export const deleteUserById = async (id) => {
     try {
         const deletedUser = await User.findByIdAndDelete(id);
-        if(!deletedUser) throw createError(404, "Usuario no encontrado");
+        if(!deletedUser) throw new Error(`No se encontro al usuario`);
         
+        const filePath = path.join(
+            __dirname,
+            "..",
+            "..",
+            "uploads",
+            userDeleted.picture
+        );
+        fs.unlink(filePath, (error) => {
+            if(error)
+            throw new Error('Hubo un error al querer eliminr la imagen');
+        });
+
         // Eliminar los favoritos relacionados con este usuario
         await Favorite.findOneAndDelete({ idUser: id });
 
         return deletedUser;
     } catch (error) {
-        throw new Error(`Error al eliminar el usuario: ${error.message}`);
+        console.error(error);
+    throw new Error(`Hubo un error al eliminar al usuario ${error.message}`);
     }
 };
 
