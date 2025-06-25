@@ -17,12 +17,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 //Crear un nuevo usuario
-export const createUser = async (data) => {
+export const saveUser = async (user, password, picture) => {
     try {
-        // Verificar si el correo ya existe
-        const existingUser = await userRouter.findone({email: data.email});
-        if(existingUser) throw createError(400, "Ya existe un usuario con este correo");
-
         //Crear un nuevo usuario
         let newUser = User();
         if (password) {
@@ -32,7 +28,6 @@ export const createUser = async (data) => {
             newUser = new User({ ...user, picture: picture });
         }
         const createUser = await newUser.save();
-        const savedUser = await newUser.save();
 
         //Crear una entrada de favoritos vacia para este usuario
         const favorites = new Favorite({ idUser: savedUser._id, idRestaurant: []});
@@ -81,6 +76,7 @@ export const getAllUsers = async () => {
         const users = await User.find(); 
         return users;
     } catch (error) {
+        console.error(error);
         throw new Error(`Hubo un error al obtener los usuarios: ${error.message}`);
     }
 };
