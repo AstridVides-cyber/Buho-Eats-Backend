@@ -2,7 +2,7 @@ import { Router } from "express";
 import { userRouter } from "./user.route.js";
 import { restaurantRouter } from "./restaurante.route.js";
 import { pictureRouter } from "./picture.route.js";//Falta
-import { reviewRouter } from "./review.route.js";//Falta
+import { reviewRouter } from "./review.route.js";
 import { favoriteRouter } from "./favorite.route.js";
 import { promotionRouter } from "./promotion.route.js";
 import { menuRouter } from "./menu.route.js";//Falta
