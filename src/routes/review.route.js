@@ -15,7 +15,7 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 const reviewRouter = Router();
 
 // Crear una reseña
-reviewRouter.post('/create', validateCreateReview, createReviewController);
+reviewRouter.post('/create', verifyToken, validateCreateReview, createReviewController);
 
 // Obtener todas las reseñas
 reviewRouter.get('/all', verifyToken, findAllReviewsController);
