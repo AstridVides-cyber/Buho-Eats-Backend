@@ -25,14 +25,12 @@ const userSchema = new Schema({
     rol: {
         type: String,
         required: true,
-        enum: ['cliente', 'restAdmin', 'sysAdmin'],
+        enum: ['usuario', 'admin', 'superadmin'], // Cambiado para coincidir con el frontend
     },
-    favorites: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Favorite',  // Referencia a los favoritos:D
-        },
-    ],
+    favoritos: {
+        type: [String], // IDs de restaurantes favoritos
+        default: [],
+    },
 });
 
 export const User = model('User', userSchema);

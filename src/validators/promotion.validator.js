@@ -1,13 +1,13 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
 
-//Validacion al crear la promo
+// Validación para crear la promoción (nuevo modelo)
 export const validateCreatePromotion = [
-    body("title")
+    body("name")
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("El título es obligatorio"),
+        .withMessage("El nombre es obligatorio"),
 
     body("description")
         .exists()
@@ -15,17 +15,22 @@ export const validateCreatePromotion = [
         .isString()
         .withMessage("La descripción es obligatoria"),
 
-    body("price.before")
-        .exists()
-        .isNumeric()
-        .withMessage("El precio anterior debe ser un número"),
+    body("imageUrl")
+        .optional()
+        .isString()
+        .withMessage("La URL de la imagen debe ser un string"),
 
-    body("price.now")
+    body("price")
         .exists()
-        .isNumeric()
-        .withMessage("El precio ahora debe ser un número"),
+        .notEmpty()
+        .withMessage("El precio es obligatorio"),
 
-    body("rules")
+    body("promprice")
+        .exists()
+        .notEmpty()
+        .withMessage("El precio promocional es obligatorio"),
+
+    body("reglas")
         .exists()
         .notEmpty()
         .isString()
@@ -33,8 +38,8 @@ export const validateCreatePromotion = [
 
     body("restaurantId")
         .exists()
-        .isMongoId()
-        .withMessage("El id del restaurante es obligatorio y debe ser un ObjectId válido"),
+        .notEmpty()
+        .withMessage("El id del restaurante es obligatorio"),
     (req, res, next) => validateResult(req, res, next),
 ];
 

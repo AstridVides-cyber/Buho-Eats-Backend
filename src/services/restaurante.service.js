@@ -14,7 +14,7 @@ export const createRestaurant = async (data) => {
 // Obtener restaurante por ID
 export const findRestaurantById = async (id) => {
     try {
-        const restaurant = await Restaurant.findById(id).populate("idUser");
+        const restaurant = await Restaurant.findById(id); // Eliminado populate("idUser")
         if (!restaurant) throw createError(404, "Restaurante no encontrado");
         return restaurant;
     } catch (error) {

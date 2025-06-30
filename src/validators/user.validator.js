@@ -31,7 +31,7 @@ export const validateCreateUser = [
     },
 ];
 
-// Validación para actualizar un usuario
+// Validación para actualizar un usuario (PATCH, todos los campos opcionales)
 export const validateUpdateUser = [
     param("id")
         .exists()
@@ -42,12 +42,12 @@ export const validateUpdateUser = [
     body("name")
         .optional()
         .isString()
-        .withMessage("El nombre debe ser una cadena de caracteres"),
+        .withMessage("El nombre debe ser un string"),
 
     body("lastName")
         .optional()
         .isString()
-        .withMessage("El apellido debe ser una cadena de caracteres"),
+        .withMessage("El apellido debe ser un string"),
 
     body("email")
         .optional()
@@ -57,13 +57,13 @@ export const validateUpdateUser = [
     body("password")
         .optional()
         .isString()
-        .withMessage("La contraseña debe ser una cadena de caracteres"),
+        .withMessage("La contraseña debe ser un string"),
 
-    body("rol")
+    body("imageProfile")
         .optional()
         .isString()
-        .withMessage("El rol debe ser una cadena de caracteres"),
-        
+        .withMessage("La imagen debe ser un string"),
+
     (req, res, next) => {
         validateResult(req, res, next);
     },

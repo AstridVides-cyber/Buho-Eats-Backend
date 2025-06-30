@@ -23,14 +23,13 @@ export const validateCreatePlate = [
     body("price")
         .exists()
         .notEmpty()
-        .isNumeric()
-        .withMessage("El precio debe ser un número"),
+        .withMessage("El precio es obligatorio"),
 
-    body("image")
+    body("imageUrl")
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("La imagen es obligatoria"),
+        .withMessage("La URL de la imagen es obligatoria"),
 
     (req, res, next) => {
         validateResult(req, res, next);

@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const promotionSchema = new Schema({
-    title: {
+    name: {
         type: String,
         required: true
     },
@@ -9,20 +9,24 @@ const promotionSchema = new Schema({
         type: String,
         required: true
     },
-    price: {
-        type: {
-            before: Number,
-            now: Number
-        },
-        required: true
+    imageUrl: {
+        type: String,
+        required: false
     },
-    rules: {
+    price: {
         type: String,
         required: true
     },
-    restaurantId: {  
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant',
+    promprice: {
+        type: String,
+        required: true
+    },
+    reglas: {
+        type: String,
+        required: true
+    },
+    restaurantId: {
+        type: String, // Puede ser ObjectId si lo prefieres
         required: true
     }
 });
