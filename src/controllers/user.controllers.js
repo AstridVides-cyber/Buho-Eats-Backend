@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { client } from "../middlewares/auth.middleware.js";
-import { User } from "../models/user.model.js"; 
+import { User } from "../models/user.model.js";
+import { Favorite } from "../models/favorite.model.js"; 
 import { 
     saveUser,
     getToken,
@@ -10,20 +11,13 @@ import {
     deleteUserById, 
     changeUserRole, 
     addRestaurantToFavorites, 
-    removeRestaurantFromFavorites,
-    getUserFavorites
+    removeRestaurantFromFavorites 
 } from "../services/user.service.js";
 import createError from "http-errors";
-import { encrypt } from "../utils/helpers/handleBcrypt.js";
-
-// Utilidad para construir la URL completa de la imagen
-const getImageUrl = (req, filename) => {
-    if (!filename) return null;
-    return `${req.protocol}://${req.get('host')}/uploads/${filename}`;
-};
 
 // Crear usuario
 export const createUserController = async (req, res, next) => {
+
     try {
         const picture = req.file ? req.file.filename : null;
         const { password, ...user } = req.body;
@@ -32,20 +26,14 @@ export const createUserController = async (req, res, next) => {
         if (existUser) throw createError(400, "El usuario ya existe");
 
         const userCreated = await saveUser(user, password, picture);
-        userCreated.favoritos = [];
+        
+        userCreated.favorites = []; // Inicializa favoritos como un array vacío
 
-        // Transformar el usuario para el frontend
-        const userForFrontend = {
-            id: userCreated._id,
-            name: userCreated.name,
-            lastName: userCreated.lastName,
-            email: userCreated.email,
-            password: userCreated.password,
-            imageProfile: userCreated.picture,
-            rol: userCreated.rol,
-            favoritos: userCreated.favoritos || []
-        };
-        res.status(201).json({ message: "Usuario creado", data: userForFrontend });
+        // Crear una entrada de favoritos vacía para este usuario
+        const favorites = new Favorite({ idUser:  userCreated._id, idRestaurant: [] });
+        await favorites.save();
+
+        res.status(201).json({ message: "Usuario creado", data: userCreated });
     } catch (error) {
         console.error(error);
         next(error);
@@ -58,29 +46,23 @@ export const generateTokenController = async (req, res, next) => {
     try {
         // Buscar al usuario por su email
         const user = await findUserByEmail(email);
+        
+        // Si el usuario no existe, retornar un error de autenticación
         if (!user) {
             throw createError(404, "No se encontró al usuario");
         }
+
         // Generar el token con la función del servicio
         const token = await getToken(user, password);
+        
+        // Si no se genera el token, retornar un error
         if (!token) {
             throw createError(401, "No se pudo generar el token de acceso");
         }
-        // Transformar el usuario para el frontend
-        const userForFrontend = {
-            id: user._id,
-            name: user.name,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password,
-            imageProfile: getImageUrl(req, user.picture),
-            rol: user.rol,
-            favoritos: user.favoritos || []
-        };
+
         res.status(200).json({
             message: "Token generado exitosamente",
             token: token,
-            user: userForFrontend
         });
     } catch (error) {
         next(error);
@@ -131,18 +113,13 @@ export const googleCallBackController = async (req, res, next) => {
 export const getAllUsersController = async (req, res, next) => {
     try {
         const users = await getAllUsers();
+        
         if (!users) throw createError(404, "No hay usuarios ingresados");
-        const usersForFrontend = users.map(user => ({
-            id: user._id,
-            name: user.name,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password,
-            imageProfile: user.picture,
-            rol: user.rol,
-            favoritos: user.favoritos || []
-        }));
-        res.status(200).json(usersForFrontend);
+
+        res.status(200).json({
+            message: "Usuarios obtenidos correctamente",
+            data: users,
+        });
     } catch (error) {
         console.error(error);
         next(error); 
@@ -157,65 +134,36 @@ export const getUserByIdController = async (req, res, next) => {
 
         if (!user) throw new createError(404, "No se encontro al usuario");
 
-        // Transformar el usuario para el frontend
-        const userForFrontend = {
-            id: user._id,
-            name: user.name,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password,
-            imageProfile: user.picture,
-            rol: user.rol,
-            favoritos: user.favoritos || []
-        };
-        res.status(200).json({ message: "Se obtuvieron los datos del usuario", data: userForFrontend });
+        res.status(200).json({ message: "Se obtuvieron los datos del usuario", data: user });
     } catch (error) {
         next(error);
     }
 };
 
-// Obtener email de usuario por ID
-export const getUserEmailByIdController = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
-        res.status(200).json({ email: user.email });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Actualizar un usuario por ID (PATCH)
+// Actualizar un usuario por ID
 export const updateUserController = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const updateData = { ...req.body };
-        if (updateData.imageProfile) {
-            updateData.picture = updateData.imageProfile;
-            delete updateData.imageProfile;
-        }
-        if (updateData.password) {
-            updateData.password = await encrypt(updateData.password);
-        }
-        if (req.file) {
-            updateData.picture = req.file.filename;
-        }
-        const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true });
-        if (!updatedUser) throw createError(404, "Usuario no encontrado");
+    const picture = req.file ? req.file.filename : null;
+    const { email } = req.params;
+    let userData = req.body;
 
-        // Transformar para el frontend
-        const userForFrontend = {
-            id: updatedUser._id,
-            name: updatedUser.name,
-            lastName: updatedUser.lastName,
-            email: updatedUser.email,
-            password: updatedUser.password,
-            imageProfile: updatedUser.picture,
-            rol: updatedUser.rol,
-            favoritos: updatedUser.favoritos || []
-        };
-        res.status(200).json({ message: "Usuario actualizado", data: userForFrontend });
+    try {
+        if (picture)
+            userData = {
+                ...userData,
+                picture: picture,
+            };
+            
+        console.log(userData);
+
+        const updatedUser = await updateUserByEmail(email, userData, picture);
+
+        if (!updatedUser) throw createError(404, `Usuario no encontrado ${email}`);
+
+        res.status(200).json({
+            message: "Usuario actualizado correctamente", 
+        });
     } catch (error) {
+        console.error(error);
         next(error);
     }
 };
@@ -263,21 +211,6 @@ export const removeRestaurantFromFavoritesController = async (req, res, next) =>
         res.status(200).json({
             message: "Restaurante eliminado de favoritos", 
             data: updatedUser 
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Obtener favoritos de un usuario (IDs o datos completos)
-export const getUserFavoritesController = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const fullData = req.query.fullData === 'true';
-        const favoritos = await getUserFavorites(id, fullData);
-        res.status(200).json({
-            message: fullData ? "Datos completos de restaurantes favoritos" : "IDs de restaurantes favoritos",
-            favoritos
         });
     } catch (error) {
         next(error);

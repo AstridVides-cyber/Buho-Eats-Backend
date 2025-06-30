@@ -1,4 +1,5 @@
 import { Plate } from "../models/plate.model.js";
+import { Picture } from "../models/picture.model.js"; 
 
 // Crear un plato
 export const createPlate = async (plateData) => {

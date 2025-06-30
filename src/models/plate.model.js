@@ -14,17 +14,14 @@ const plateSchema = new Schema({
         required: true,
     },
     price: {
-        type: String, // Cambiado a string para coincidir con el frontend
+        type: Number,
         required: true,
     },
-    imageUrl: {
-        type: String, // Ahora es string, no referencia a Picture
+    image: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Picture',  
         required: true,
     },
-    idRestaurant: {
-        type: String, // Puede ser ObjectId si lo prefieres
-        required: true,
-    }
 });
 
 export const Plate = model('Plate', plateSchema);

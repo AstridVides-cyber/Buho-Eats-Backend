@@ -16,15 +16,19 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const plateRouter = Router();
 
-// Crear un plato para un restaurante
-plateRouter.post('/', upload.single('image'), validateCreatePlate, createPlateController);
-// Obtener todos los platos de un restaurante
-plateRouter.get('/', findAllPlatesController);
+// Crear un plato
+plateRouter.post('/create', upload.single('image'), validateCreatePlate, createPlateController);
+
+// Obtener todos los platos
+plateRouter.get('/allPlates', findAllPlatesController);
+
 // Obtener un plato por ID
-plateRouter.get('/:dishId', validateGetPlateById, findPlateByIdController);
+plateRouter.get('/:id', validateGetPlateById, findPlateByIdController);
+
 // Actualizar un plato
-plateRouter.put('/:dishId', upload.single('image'), validateUpdatePlate, updatePlateController);
+plateRouter.put('/:id', upload.single('image'), validateUpdatePlate, updatePlateController);
+
 // Eliminar un plato
-plateRouter.delete('/:dishId', validateDeletePlate, deletePlateController);
+plateRouter.delete('/:id', validateDeletePlate, deletePlateController);
 
 export { plateRouter };

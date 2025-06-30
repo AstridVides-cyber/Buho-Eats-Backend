@@ -4,7 +4,6 @@ import 'dotenv/config';
 import { connectiondb } from './src/config/dbconnetion.config.js';
 import { mainRouter } from './src/routes/main.route.js';
 import { errorHandler } from './src/middlewares/error.middleware.js';
-import path from 'path';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -14,9 +13,6 @@ console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 const app = express();
 connectiondb();
-
-// Servir archivos estáticos de la carpeta uploads
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use(express.json());
 app.use(mainRouter);

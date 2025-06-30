@@ -6,6 +6,7 @@ import path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
+import { Favorite } from "../models/favorite.model.js"; 
 import { Restaurant } from "../models/restaurante.model.js";
 import createError from "http-errors"; 
 
@@ -28,6 +29,10 @@ export const saveUser = async (user, password, picture) => {
             newUser = new User({ ...user, picture: picture });
         }
         const createUser = await newUser.save();
+
+        //Crear una entrada de favoritos vacia para este usuario
+        const favorites = new Favorite({ idUser: savedUser._id, idRestaurant: []});
+        await favorites.save();
 
         return createUser;
 
@@ -72,7 +77,7 @@ export const getAllUsers = async () => {
 //Obtener un usuario por email
 export const findUserByEmail = async (email, toCreate) => {
     try {
-        const user = await User.findOne({ email: email }); // Eliminar populate, ya no es necesario
+        const user = await User.findOne({ email: email }).populate("favorites");
 
         if (!user && !toCreate) throw  new Error( "Usuario no encontrado");
     
@@ -131,8 +136,22 @@ export const deleteUserById = async (id) => {
     try {
         const deletedUser = await User.findByIdAndDelete(id);
         if(!deletedUser) throw new Error(`No se encontro al usuario`);
+        
+        const filePath = path.join(
+            __dirname,
+            "..",
+            "..",
+            "uploads",
+            userDeleted.picture
+        );
+        fs.unlink(filePath, (error) => {
+            if(error)
+            throw new Error('Hubo un error al querer eliminr la imagen');
+        });
 
-        // Ya no se elimina nada de favoritos porque solo es un arreglo de ids
+        // Eliminar los favoritos relacionados con este usuario
+        await Favorite.findOneAndDelete({ idUser: id });
+
         return deletedUser;
     } catch (error) {
         console.error(error);
@@ -164,21 +183,23 @@ export const changeUserRole = async (id, role) => {
 // Agregar restaurante a los favoritos del usuario
 export const addRestaurantToFavorites = async (idUser, idRestaurant) => {
     try {
-        // Verificar si el usuario existe
+        // Verificar si el usuario y el restaurante existen
         const user = await User.findById(idUser);
         if (!user) throw createError(404, "Usuario no encontrado");
-
-        // Verificar si el restaurante ya está en los favoritos
-        if (user.favoritos.includes(idRestaurant)) {
-            throw createError(400, "El restaurante ya está en los favoritos");
+    
+        const restaurant = await Restaurant.findById(idRestaurant);
+        if (!restaurant) throw createError(404, "Restaurante no encontrado");
+    
+    // Verificar si el restaurante ya está en los favoritos
+    if (user.favorites.includes(idRestaurant)) {
+        throw createError(400, "El restaurante ya está en los favoritos");
         }
-
+    
         // Agregar el restaurante a los favoritos del usuario
-        user.favoritos.push(idRestaurant);
+        user.favorites.push(idRestaurant);
         await user.save();
-        // Recargar el usuario actualizado para asegurar favoritos actualizado
-        const refreshedUser = await User.findById(idUser);
-        return refreshedUser;
+    
+        return user;
     } catch (error) {
         throw new Error(`Error al agregar el restaurante a favoritos: ${error.message}`);
     }
@@ -187,51 +208,19 @@ export const addRestaurantToFavorites = async (idUser, idRestaurant) => {
 // Eliminar restaurante de los favoritos del usuario
 export const removeRestaurantFromFavorites = async (idUser, idRestaurant) => {
     try {
-        // Verificar si el usuario existe
+        // Verificar si el usuario y el restaurante existen
         const user = await User.findById(idUser);
         if (!user) throw createError(404, "Usuario no encontrado");
-
+    
+        const restaurant = await Restaurant.findById(idRestaurant);
+        if (!restaurant) throw createError(404, "Restaurante no encontrado");
+    
         // Eliminar el restaurante de los favoritos
-        user.favoritos = user.favoritos.filter(fav => fav !== idRestaurant);
+        user.favorites = user.favorites.filter(favorite => favorite.toString() !== idRestaurant);
         await user.save();
-
+    
         return user; 
     } catch (error) {
         throw new Error(`Error al eliminar el restaurante de favoritos: ${error.message}`);
-    }
-};
-
-// Obtener los favoritos de un usuario (IDs o datos completos)
-export const getUserFavorites = async (idUser, fullData = false) => {
-    try {
-        const user = await User.findById(idUser);
-        if (!user) throw createError(404, "Usuario no encontrado");
-        if (!user.favoritos || user.favoritos.length === 0) return [];
-
-        if (fullData) {
-            // Devuelve los datos completos de los restaurantes favoritos
-            const restaurants = await Restaurant.find({ _id: { $in: user.favoritos } });
-            return restaurants;
-        } else {
-            // Devuelve solo los IDs
-            return user.favoritos;
-        }
-    } catch (error) {
-        throw new Error(`Error al obtener los favoritos: ${error.message}`);
-    }
-};
-
-// Eliminar un restaurante de los favoritos de un usuario (por IDs)
-export const removeFavoriteIfExists = async (userId, restaurantId) => {
-    try {
-        const user = await User.findById(userId);
-        if (!user) return;
-        if (user.favoritos && user.favoritos.includes(restaurantId)) {
-            user.favoritos = user.favoritos.filter(fav => fav !== restaurantId);
-            await user.save();
-        }
-    } catch (error) {
-        // No lanzar error, solo loguear
-        console.error(`Error al eliminar favorito al bloquear usuario: ${error.message}`);
     }
 };

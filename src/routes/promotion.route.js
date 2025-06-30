@@ -3,9 +3,7 @@ import {
     createPromotionController, 
     getPromotionByIdController, 
     updatePromotionController, 
-    deletePromotionController,
-    getPromotionsController,
-    getAllPromotionsController // nuevo
+    deletePromotionController 
 } from "../controllers/promotion.controllers.js";
 import { 
     validateCreatePromotion, 
@@ -13,27 +11,19 @@ import {
     validateUpdatePromotion, 
     validateDeletePromotion 
 } from "../validators/promotion.validator.js";
-import { upload } from "../middlewares/multer.middleware.js";
 
-// Cambia a mergeParams: true para heredar restaurantId
-const promotionRouter = Router({ mergeParams: true });
-
-// Obtener todas las promociones globales
-promotionRouter.get("/all", getAllPromotionsController);
+const promotionRouter = Router();
 
 // Crear promoción para un restaurante 
-promotionRouter.post("/", upload.single('imageUrl'), validateCreatePromotion, createPromotionController);
+promotionRouter.post("/create", validateCreatePromotion, createPromotionController);
 
 // Obtener una promoción por ID 
 promotionRouter.get("/:promotionId", validateGetPromotionById, getPromotionByIdController);
 
 // Actualizar una promoción 
-promotionRouter.put("/:promotionId", upload.single('imageUrl'), validateUpdatePromotion, updatePromotionController);
+promotionRouter.put("/:promotionId", validateUpdatePromotion, updatePromotionController);
 
 // Eliminar una promoción 
 promotionRouter.delete("/:promotionId", validateDeletePromotion, deletePromotionController);
-
-// Obtener todas las promociones de un restaurante
-promotionRouter.get("/", getPromotionsController);
 
 export { promotionRouter };

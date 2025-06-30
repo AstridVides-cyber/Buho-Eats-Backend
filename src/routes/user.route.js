@@ -3,37 +3,35 @@ import {
     createUserController,
     getAllUsersController, 
     getUserByIdController, 
-    getUserEmailByIdController,
     updateUserController, 
     deleteUserController,
     generateTokenController, 
-    changeUserRoleController,
-    getUserFavoritesController // <-- nuevo
+    changeUserRoleController, 
+    addRestaurantToFavoritesController, 
+    removeRestaurantFromFavoritesController 
 } from "../controllers/user.controllers.js";
 import { 
     validateCreateUser, 
     validateUpdateUser, 
-    validateChangeRole
+    validateChangeRole, 
+    validateAddRestaurantToFavorites, 
+    validateRemoveRestaurantFromFavorites 
 } from "../validators/user.validator.js";
-import { upload } from "../middlewares/multer.middleware.js";
-import { addRestaurantToFavorites, removeRestaurantFromFavorites } from "../services/user.service.js";
+import { upload } from "../middlewares/multer.middleware.js"
+//import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
 
 // Crear usuario:D
-userRouter.post("/", validateCreateUser,  upload.single('picture'), createUserController);
+userRouter.post("/create", validateCreateUser,  upload.single('picture'), createUserController);
 
-// Ruta para login y obtención de token
-userRouter.post('/login', generateTokenController);
+//userRouter.post('/login', validateLogin, generateTokenController);// Falta poner su validacion
 
 // Ruta para obtener todos los usuarios:D
-userRouter.get("/", getAllUsersController);
+userRouter.get("/all", getAllUsersController);
 
 // Obtener usuario por ID:D
 userRouter.get("/:id", getUserByIdController);
-
-// Obtener email de usuario por ID
-userRouter.get("/:id/email", getUserEmailByIdController);
 
 // Actualizar usuario:D//revisar
 userRouter.put("/:id", validateUpdateUser, upload.single('picture'), updateUserController);
@@ -44,34 +42,10 @@ userRouter.delete("/:id", deleteUserController);
 // Cambiar rol de usuario:D
 userRouter.put("/:id/rol", validateChangeRole, changeUserRoleController);
 
-// Agregar restaurante a favoritos
-userRouter.post('/:idUser/favorites', async (req, res, next) => {
-    try {
-        const { idRestaurant } = req.body;
-        const updatedUser = await addRestaurantToFavorites(req.params.idUser, idRestaurant);
-        res.status(200).json({
-            message: "Restaurante agregado a favoritos",
-            favoritos: updatedUser.favoritos || []
-        });
-    } catch (error) {
-        next(error);
-    }
-});
+// Agregar restaurante a favoritos:D
+userRouter.post("/:idUser/favoritos/add", validateAddRestaurantToFavorites, addRestaurantToFavoritesController);
 
-// Eliminar restaurante de favoritos (ahora solo por parámetro en la URL)
-userRouter.delete('/:idUser/favorites/:idRestaurant', async (req, res, next) => {
-    try {
-        const updatedUser = await removeRestaurantFromFavorites(req.params.idUser, req.params.idRestaurant);
-        res.status(200).json({
-            message: "Restaurante eliminado de favoritos",
-            favoritos: updatedUser.favoritos || []
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Obtener favoritos de un usuario (IDs o datos completos)
-userRouter.get('/:id/favorites', getUserFavoritesController);
+// Eliminar restaurante de favoritos:D
+userRouter.delete("/:idUser/favoritos/remove", validateRemoveRestaurantFromFavorites, removeRestaurantFromFavoritesController);
 
 export { userRouter };

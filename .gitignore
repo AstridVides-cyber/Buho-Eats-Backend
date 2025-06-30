@@ -16,6 +16,3 @@ yarn-error.log*
 
 #OS trash files
 Thumbs.db
-
-#MongoDB data files
-.env
