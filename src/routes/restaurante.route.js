@@ -18,7 +18,7 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 const restaurantRouter = Router();
 
 // Crear restaurante:D
-restaurantRouter.post("/create", upload.single('image'),validateCreateRestaurant, createRestaurantController);
+restaurantRouter.post("/create", verifyToken, upload.single('image'),validateCreateRestaurant, createRestaurantController);
 
 // Obtener todos los restaurantes:
 restaurantRouter.get("/all", verifyToken, getRestaurantsController);
