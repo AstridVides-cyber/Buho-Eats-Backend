@@ -48,13 +48,13 @@ export const getToken = async (user, password) => {
             throw new Error("Contraseña incorrecta");
         }
         const { _id, name } = user;
-        const expires = Math.floor(Date.now() / 1000) + (2 * 60 * 60); // Expiración a 2 horas
 
-        const token = jwt.sign({
-            _id,
-            name,
-            exp: expires
-        }, JWT_SECRET);
+        // Generar el token con una expiración de 2 horas
+        const token = jwt.sign(
+            { _id, name },
+            JWT_SECRET,
+            { expiresIn: '2h' } 
+        );
 
         return token;
     } catch (error) {
