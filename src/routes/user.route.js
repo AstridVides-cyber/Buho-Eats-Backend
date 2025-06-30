@@ -22,10 +22,11 @@ import { upload } from "../middlewares/multer.middleware.js"
 
 const userRouter = Router();
 
+// Ruta de login
+userRouter.post('/login', generateTokenController);
+
 // Crear usuario:D
 userRouter.post("/create", validateCreateUser,  upload.single('picture'), createUserController);
-
-//userRouter.post('/login', validateLogin, generateTokenController);// Falta poner su validacion
 
 // Ruta para obtener todos los usuarios:D
 userRouter.get("/all", getAllUsersController);
