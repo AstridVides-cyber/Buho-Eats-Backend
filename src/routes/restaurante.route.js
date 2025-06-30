@@ -13,6 +13,7 @@ import {
     validateGetRestaurantById 
 } from "../validators/restaurante.validator.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const restaurantRouter = Router();
 
@@ -20,15 +21,15 @@ const restaurantRouter = Router();
 restaurantRouter.post("/create", upload.single('image'),validateCreateRestaurant, createRestaurantController);
 
 // Obtener todos los restaurantes:
-restaurantRouter.get("/all", getRestaurantsController);
+restaurantRouter.get("/all", verifyToken, getRestaurantsController);
 
 // Obtener restaurante por ID:D
-restaurantRouter.get("/:id", validateGetRestaurantById, getRestaurantByIdController);
+restaurantRouter.get("/:id", verifyToken, validateGetRestaurantById, getRestaurantByIdController);
 
 // Actualizar restaurante por ID:D
-restaurantRouter.put("/:id", validateUpdateRestaurant, updateRestaurantController);
+restaurantRouter.put("/:id", verifyToken, validateUpdateRestaurant, updateRestaurantController);
 
 // Eliminar restaurante por ID:D
-restaurantRouter.delete("/:id", validateDeleteRestaurant, deleteRestaurantController);
+restaurantRouter.delete("/:id", verifyToken, validateDeleteRestaurant, deleteRestaurantController);
 
 export { restaurantRouter };
