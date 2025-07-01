@@ -24,9 +24,14 @@ export const saveUser = async (user, password, picture) => {
         let newUser = User();
         if (password) {
             const hashPassword = await encrypt(password);
-            newUser = new User({ ...user, password: hashPassword, picture: picture });
+            newUser = new User({ ...user, 
+                password: hashPassword, 
+                picture: picture 
+            });
         } else {
-            newUser = new User({ ...user, picture: picture });
+            newUser = new User({ ...user, 
+                picture: picture 
+            });
         }
         const createUser = await newUser.save();
 
@@ -63,6 +68,32 @@ export const getToken = async (user, password) => {
     }
 };
 
+/*
+//Obtener url auth
+export const generateUrlAuthorize = async () => {
+    try {
+    //Genera una url para enviarlo a una pagina donde el usuario autorizara el inicio de sesion y obtener acces token
+    const authorize = client.generateAuthUrl({
+        ESTO CAMBIARAS LOS LINKS
+        access_type: "offline",
+        scope:
+        "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid",
+        redirect_uri: "http://localhost:5173/login",
+        prompt: "consent",
+    });
+
+    if (!authorize)
+        throw new Error("No se a proporcionado una url de autorizacion");
+
+    return authorize;
+    } catch (error) {
+    throw new Error(
+        `Hubo un error al generar la url de autorizacion: ${error.message}`
+    );
+    }
+};
+*/
+
 // Obtener todos los usuarios
 export const getAllUsers = async () => {
     try {
@@ -73,6 +104,19 @@ export const getAllUsers = async () => {
         throw new Error(`Hubo un error al obtener los usuarios: ${error.message}`);
     }
 };
+
+/* 
+export const getUserData = async (access_token) => {
+    try {
+    //Se extrae la informacion con la url y se envia el token de acceso
+    const response = await fetch(
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+    );
+    const data = await response.json();
+    return data;
+    } catch (error) {}
+};
+*/
 
 //Obtener un usuario por email
 export const findUserByEmail = async (email, toCreate) => {
