@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { 
     createUserController,
+    getAuthorizeUrlController,
+    googleCallBackController,
     getAllUsersController, 
     getUserByIdController, 
     updateUserController, 
@@ -14,6 +16,7 @@ import {
     validateCreateUser, 
     validateUpdateUser, 
     validateChangeRole, 
+    validateCallback,
     validateAddRestaurantToFavorites, 
     validateRemoveRestaurantFromFavorites 
 } from "../validators/user.validator.js";
@@ -21,6 +24,13 @@ import { upload } from "../middlewares/multer.middleware.js"
 import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
+
+// Ruta auth
+userRouter.get('/auth', validateCallback, googleCallBackController);
+
+// Ruta authorize
+userRouter.get('/authorize', getAuthorizeUrlController);
+
 
 // Ruta de login
 userRouter.post('/login', generateTokenController);
