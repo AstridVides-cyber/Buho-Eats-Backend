@@ -5,6 +5,8 @@ import { Favorite } from "../models/favorite.model.js";
 import { 
     saveUser,
     getToken,
+    generateUrlAuthorize,
+    getUserData,
     getAllUsers, 
     findUserByEmail, 
     updateUserByEmail, 
@@ -39,6 +41,18 @@ export const createUserController = async (req, res, next) => {
         next(error);
     }
 };
+
+/*
+export const getAuthorizeUrlController = async (req, res, next) => {
+    try {
+        const authorize = await generateUrlAuthorize();
+
+        res.json({ data: authorize });
+    } catch (error) {
+        next(error);
+    }
+};
+*/
 
 // Obteniendo el token
 export const generateTokenController = async (req, res, next) => {
