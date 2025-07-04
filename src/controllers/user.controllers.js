@@ -42,7 +42,7 @@ export const createUserController = async (req, res, next) => {
     }
 };
 
-/*
+
 export const getAuthorizeUrlController = async (req, res, next) => {
     try {
         const authorize = await generateUrlAuthorize();
@@ -52,7 +52,7 @@ export const getAuthorizeUrlController = async (req, res, next) => {
         next(error);
     }
 };
-*/
+
 
 // Obteniendo el token
 export const generateTokenController = async (req, res, next) => {
@@ -84,21 +84,20 @@ export const generateTokenController = async (req, res, next) => {
 };
 
 
-/*
 export const googleCallBackController = async (req, res, next) => {
     const { code } = req.query;
     try {
-    if (!code)
-        throw new Error(`No se ubtuvo un codigo`)
+        if (!code)
+            throw new Error(`No se ubtuvo un codigo`)
     
-    const { tokens } = await client.getToken(code);
-    client.setCredentials(tokens);
-
-    const userData = await getUserData(tokens.access_token);
-
-    const existingUser = await findUserByEmail(userData.email, true);
-    const jwtToken = await getToken(userData, null, true);
-
+        const { tokens } = await client.getToken(code);
+        client.setCredentials(tokens);
+    
+        const userData = await getUserData(tokens.access_token);
+    
+        const existingUser = await findUserByEmail(userData.email, true);
+        const jwtToken = await getToken(userData, null, true);
+    
         if (existingUser) {
                 res.status(200).json({
                 message: "Se inicio sesion correctamente",
@@ -106,13 +105,13 @@ export const googleCallBackController = async (req, res, next) => {
                 token: jwtToken,
             });
         } else {
-                const data = {
+            const data = {
                 name: userData.given_name,
                 email: userData.email,
                 rol: "cliente",
             };
             await saveUser(data, null);
-                res.status(200).json({
+            res.status(200).json({
                 message: "Se autentico exitosamente",
                 data: userData,
                 token: jwtToken,
@@ -121,7 +120,7 @@ export const googleCallBackController = async (req, res, next) => {
         } catch (error) {
         next(error);
         }
-};*/
+};
 
 // Obtener todos los usuarios
 export const getAllUsersController = async (req, res, next) => {

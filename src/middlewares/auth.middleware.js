@@ -23,6 +23,7 @@ export const verifyGoogleToken = async (req, res, next) => {
 
         const payload = ticket.getPayload();
         req.user = payload;
+
         next();
     } catch (error) {
         throw new Error(`Hubo un error al validar el token: ${error.message}`);

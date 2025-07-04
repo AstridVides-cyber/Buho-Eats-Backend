@@ -56,8 +56,10 @@ export const getToken = async (user, password) => {
 
         // Generar el token con una expiración de 2 horas
         const token = jwt.sign(
-            { _id, name },
-            JWT_SECRET,
+            { 
+                _id, 
+                name },
+                JWT_SECRET,
             { expiresIn: '48h' } 
         );
 
@@ -68,17 +70,17 @@ export const getToken = async (user, password) => {
     }
 };
 
-/*
+
 //Obtener url auth
 export const generateUrlAuthorize = async () => {
     try {
     //Genera una url para enviarlo a una pagina donde el usuario autorizara el inicio de sesion y obtener acces token
     const authorize = client.generateAuthUrl({
-        ESTO CAMBIARAS LOS LINKS
+        
         access_type: "offline",
         scope:
         "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid",
-        redirect_uri: "http://localhost:5173/login",
+        redirect_uri: process.env.REDIRECT_URI_1,
         prompt: "consent",
     });
 
@@ -92,7 +94,7 @@ export const generateUrlAuthorize = async () => {
     );
     }
 };
-*/
+
 
 // Obtener todos los usuarios
 export const getAllUsers = async () => {
@@ -105,7 +107,7 @@ export const getAllUsers = async () => {
     }
 };
 
-/* 
+
 export const getUserData = async (access_token) => {
     try {
     //Se extrae la informacion con la url y se envia el token de acceso
@@ -116,7 +118,7 @@ export const getUserData = async (access_token) => {
     return data;
     } catch (error) {}
 };
-*/
+
 
 //Obtener un usuario por email
 export const findUserByEmail = async (email, toCreate) => {

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { 
     createUserController,
-    //getAuthorizeUrlController,
-    //googleCallBackController,
+    getAuthorizeUrlController,
+    googleCallBackController,
     getAllUsersController, 
     getUserByIdController, 
     updateUserController, 
@@ -16,7 +16,7 @@ import {
     validateCreateUser, 
     validateUpdateUser, 
     validateChangeRole, 
-//    validateCallback,
+    validateCallback,
     validateAddRestaurantToFavorites, 
     validateRemoveRestaurantFromFavorites 
 } from "../validators/user.validator.js";
@@ -25,12 +25,12 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
 
-/* Ruta auth
-userRouter.get('/auth', validateCallback, googleCallBackController);
+// Ruta auth
+userRouter.post('/auth', validateCallback, googleCallBackController);
 
 // Ruta authorize
 userRouter.get('/authorize', getAuthorizeUrlController);
-*/
+
 
 // Ruta de login
 userRouter.post('/login', generateTokenController);
