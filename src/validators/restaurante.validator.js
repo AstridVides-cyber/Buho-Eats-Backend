@@ -1,5 +1,6 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
+import { validateImageString } from "../utils/helpers/image.helper.js";
 
 // Validación para crear un restaurante
 export const validateCreateRestaurant = [
@@ -20,6 +21,10 @@ export const validateCreateRestaurant = [
         .notEmpty()
         .isString()
         .withMessage("La categoría es obligatoria"),
+
+    body("image")
+        .optional()
+        .custom(validateImageString),
 
     body("email")
         .exists()
@@ -59,6 +64,10 @@ export const validateUpdateRestaurant = [
         .notEmpty()
         .isString()
         .withMessage("La categoría es obligatoria"),
+
+    body("image")
+        .optional()
+        .custom(validateImageString),
 
     (req, res, next) => { validateResult(req, res, next); }
 ];

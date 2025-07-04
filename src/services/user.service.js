@@ -1,10 +1,6 @@
 import { client } from "../middlewares/auth.middleware.js";
 import { User } from "../models/user.model.js";
 import { compare, encrypt } from "../utils/helpers/handleBcrypt.js";
-import fs from "fs";
-import path from "path";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
 import { Favorite } from "../models/favorite.model.js"; 
 import { Restaurant } from "../models/restaurante.model.js";
@@ -14,32 +10,31 @@ import createError from "http-errors";
 const JWT_SECRET = process.env.JWT_SECRET;
 const expires = Math.floor(Date.now() / 1000) + (48 * 60 * 60);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 //Crear un nuevo usuario
 export const saveUser = async (user, password, picture) => {
     try {
         //Crear un nuevo usuario
-        let newUser = User();
+        let newUser;
         if (password) {
             const hashPassword = await encrypt(password);
-            newUser = new User({ ...user, 
+            newUser = new User({ 
+                ...user, 
                 password: hashPassword, 
-                picture: picture 
+                picture: picture || null
             });
         } else {
-            newUser = new User({ ...user, 
-                picture: picture 
+            newUser = new User({ 
+                ...user, 
+                picture: picture || null
             });
         }
-        const createUser = await newUser.save();
+        const savedUser = await newUser.save();
 
         //Crear una entrada de favoritos vacia para este usuario
         const favorites = new Favorite({ idUser: savedUser._id, idRestaurant: []});
         await favorites.save();
 
-        return createUser;
+        return savedUser;
 
     } catch (error) {
         throw new Error(`Error al crear el usuario: ${error.message}`);
@@ -132,22 +127,10 @@ export const findUserByEmail = async (email, toCreate) => {
 };
 
 // Actualizar un usuario por email
-export const updateUserById = async (id, data, picture) => {
+export const updateUserById = async (id, data) => {
     try {
         const oldData = await User.findById(id);
         if (!oldData) throw new Error(`No se encontró al usuario`);
-
-        if (picture && oldData.picture) {
-            const filePath = path.join(
-                __dirname,
-                "..", "..", "uploads", oldData.picture
-            );
-            fs.unlink(filePath, (error) => {
-                if (error) {
-                    throw new Error(`Error al eliminar la imagen anterior: ${error.message}`);
-                }
-            });
-        }
 
         const updatedUser = await User.findByIdAndUpdate(
             id,
@@ -167,22 +150,6 @@ export const deleteUserById = async (id) => {
     try {
         const deletedUser = await User.findByIdAndDelete(id);
         if (!deletedUser) throw new Error(`No se encontró al usuario`);
-
-        // Eliminar imagen solo si existe
-        if (deletedUser.picture) {
-            const filePath = path.join(
-                __dirname,
-                "..",
-                "..",
-                "uploads",
-                deletedUser.picture
-            );
-            fs.unlink(filePath, (error) => {
-                if (error) {
-                    console.error("Error eliminando imagen:", error.message);
-                }
-            });
-        }
 
         // Eliminar los favoritos relacionados con este usuario
         await Favorite.findOneAndDelete({ idUser: id });

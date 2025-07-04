@@ -1,5 +1,6 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
+import { validateImageString } from "../utils/helpers/image.helper.js";
 
 //Validacion al crear la promo
 export const validateCreatePromotion = [
@@ -14,6 +15,10 @@ export const validateCreatePromotion = [
         .notEmpty()
         .isString()
         .withMessage("La descripción es obligatoria"),
+
+    body("image")
+        .optional()
+        .custom(validateImageString),
 
     body("price.before")
         .exists()
@@ -63,6 +68,10 @@ export const validateUpdatePromotion = [
         .optional()
         .isString()
         .withMessage("La descripción debe ser una cadena de texto"),
+
+    body("image")
+        .optional()
+        .custom(validateImageString),
 
     body("price.before")
         .optional()

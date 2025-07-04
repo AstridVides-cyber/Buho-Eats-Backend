@@ -12,13 +12,12 @@ import {
     validateGetPlateById, 
     validateDeletePlate 
 } from "../validators/plate.validator.js";
-import { upload } from "../middlewares/multer.middleware.js";
 import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const plateRouter = Router();
 
 // Crear un plato
-plateRouter.post('/create', verifyToken, upload.single('image'), validateCreatePlate, createPlateController);
+plateRouter.post('/create', verifyToken, validateCreatePlate, createPlateController);
 
 // Obtener todos los platos
 plateRouter.get('/all', findAllPlatesController);
@@ -27,7 +26,7 @@ plateRouter.get('/all', findAllPlatesController);
 plateRouter.get('/:id', validateGetPlateById, findPlateByIdController);
 
 // Actualizar un plato
-plateRouter.put('/:id', verifyToken, upload.single('image'), validateUpdatePlate, updatePlateController);
+plateRouter.put('/:id', verifyToken, validateUpdatePlate, updatePlateController);
 
 // Eliminar un plato
 plateRouter.delete('/:id', verifyToken, validateDeletePlate, deletePlateController);

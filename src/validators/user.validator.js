@@ -1,5 +1,6 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
+import { validateImageString } from "../utils/helpers/image.helper.js";
 
 const allowedRoles = ["cliente", "restAdmin", "sysAdmin"];
 
@@ -27,6 +28,10 @@ export const validateCreateUser = [
         .exists()
         .isString()
         .withMessage("La contraseña es obligatoria"),
+
+    body("picture")
+        .optional()
+        .custom(validateImageString),
 
     
     (req, res, next) => {
@@ -61,6 +66,10 @@ export const validateUpdateUser = [
         .optional()
         .isString()
         .withMessage("La contraseña debe ser una cadena de caracteres"),
+
+    body("picture")
+        .optional()
+        .custom(validateImageString),
 
     body("rol")
         .optional()

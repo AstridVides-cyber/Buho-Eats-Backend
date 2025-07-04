@@ -21,8 +21,7 @@ import createError from "http-errors";
 export const createUserController = async (req, res, next) => {
 
     try {
-        const picture = req.file ? req.file.filename : null;
-        const { password, ...user } = req.body;
+        const { password, picture, ...user } = req.body;
         const existUser = await findUserByEmail(user.email, true);
 
         if (existUser) throw createError(400, "El usuario ya existe");
@@ -159,20 +158,13 @@ export const getUserByIdController = async (req, res, next) => {
 
 // Actualizar un usuario por ID
 export const updateUserController = async (req, res, next) => {
-    const picture = req.file ? req.file.filename : null;
     const { id } = req.params;
     let userData = req.body;
 
     try {
-        if (picture)
-            userData = {
-                ...userData,
-                picture: picture,
-            };
-            
         console.log(userData);
 
-        const updatedUser = await updateUserById(id, userData, picture);
+        const updatedUser = await updateUserById(id, userData);
 
         if (!updatedUser) throw createError(404, `Usuario no encontrado ${ id }`);
 

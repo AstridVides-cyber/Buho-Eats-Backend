@@ -14,15 +14,14 @@ import {
     validateRemovePictures 
 } from "../validators/picture.validator.js";
 import { verifyToken } from "../middlewares/jwt.middleware.js";
-import { upload } from "../middlewares/multer.middleware.js";
 
 const pictureRouter = Router();
 
 pictureRouter.post("/create/:idRestaurant", verifyToken, validateCreatePicture, createPictureController);
 pictureRouter.get("/all", getPicturesController);
 pictureRouter.get("/getOne/:id",  findPictureByIdController);
-pictureRouter.put("/add", verifyToken, validateAddPictures, upload.array('url', 5), addPicturesController);
+pictureRouter.put("/add", verifyToken, validateAddPictures, addPicturesController);
 pictureRouter.delete("/delete", verifyToken, validateDeletePicture, deletePictureController);
-pictureRouter.delete("/remove", verifyToken, validateRemovePictures,upload.array('url', 10), removePicturesController);
+pictureRouter.delete("/remove", verifyToken, validateRemovePictures, removePicturesController);
 
 export { pictureRouter };

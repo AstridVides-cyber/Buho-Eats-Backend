@@ -1,6 +1,6 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
-import { PICTURE } from "../utils/regex/regex.js"; 
+import { validateImageString } from "../utils/helpers/image.helper.js";
 
 // Validación para crear un plato
 export const validateCreatePlate = [
@@ -34,8 +34,7 @@ export const validateCreatePlate = [
 
         body("image")
         .optional()
-        .isString()
-        .withMessage("La imagen es obligatoria"),
+        .custom(validateImageString),
     
 
     (req, res, next) => {
@@ -75,9 +74,7 @@ export const validateUpdatePlate = [
 
     body("image")
         .optional()
-        .isString()
-        .matches(PICTURE) // Validación de la imagen
-        .withMessage("La imagen debe tener una extension valida"),
+        .custom(validateImageString),
 
     (req, res, next) => {
         validateResult(req, res, next);
