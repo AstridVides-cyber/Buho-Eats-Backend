@@ -21,10 +21,10 @@ const restaurantRouter = Router();
 restaurantRouter.post("/create", verifyToken, upload.single('image'),validateCreateRestaurant, createRestaurantController);
 
 // Obtener todos los restaurantes:
-restaurantRouter.get("/all", verifyToken, getRestaurantsController);
+restaurantRouter.get("/all", getRestaurantsController);
 
 // Obtener restaurante por ID:D
-restaurantRouter.get("/:id", verifyToken, validateGetRestaurantById, getRestaurantByIdController);
+restaurantRouter.get("/:id", validateGetRestaurantById, getRestaurantByIdController);
 
 // Actualizar restaurante por ID:D
 restaurantRouter.put("/:id", verifyToken, validateUpdateRestaurant, updateRestaurantController);
