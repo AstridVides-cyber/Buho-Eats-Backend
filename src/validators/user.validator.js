@@ -105,7 +105,7 @@ export const validateAddRestaurantToFavorites = [
 // Validación para eliminar un restaurante de favoritos
 export const validateRemoveRestaurantFromFavorites = [
     body("idRestaurant")
-        .exists()
+        .exists() 
         .isMongoId()
         .withMessage("El id del restaurante es obligatorio y debe ser un ObjectId válido"),
 

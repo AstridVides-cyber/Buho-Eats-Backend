@@ -44,10 +44,10 @@ userRouter.get("/all", verifyToken, getAllUsersController);
 // Obtener usuario por ID:D
 userRouter.get("/:id", verifyToken, getUserByIdController);
 
-// Actualizar usuario:D//revisar
+// Actualizar usuario:D
 userRouter.put("/:id", verifyToken, validateUpdateUser, upload.single('picture'), updateUserController);
 
-// Eliminar usuario:D
+// Eliminar usuario:D/////
 userRouter.delete("/:id", verifyToken, deleteUserController);
 
 // Cambiar rol de usuario:D

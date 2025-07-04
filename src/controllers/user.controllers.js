@@ -9,7 +9,7 @@ import {
    // getUserData,
     getAllUsers, 
     findUserByEmail, 
-    updateUserByEmail, 
+    updateUserById, 
     deleteUserById, 
     changeUserRole, 
     addRestaurantToFavorites, 
@@ -160,7 +160,7 @@ export const getUserByIdController = async (req, res, next) => {
 // Actualizar un usuario por ID
 export const updateUserController = async (req, res, next) => {
     const picture = req.file ? req.file.filename : null;
-    const { email } = req.params;
+    const { id } = req.params;
     let userData = req.body;
 
     try {
@@ -172,9 +172,9 @@ export const updateUserController = async (req, res, next) => {
             
         console.log(userData);
 
-        const updatedUser = await updateUserByEmail(email, userData, picture);
+        const updatedUser = await updateUserById(id, userData, picture);
 
-        if (!updatedUser) throw createError(404, `Usuario no encontrado ${email}`);
+        if (!updatedUser) throw createError(404, `Usuario no encontrado ${ id }`);
 
         res.status(200).json({
             message: "Usuario actualizado correctamente", 

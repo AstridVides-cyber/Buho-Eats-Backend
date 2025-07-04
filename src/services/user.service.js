@@ -132,66 +132,57 @@ export const findUserByEmail = async (email, toCreate) => {
 };
 
 // Actualizar un usuario por email
-export const updateUserByEmail = async (email, data, picture) => {
+export const updateUserById = async (id, data, picture) => {
     try {
-        const oldData = await findUserByEmail(email);
-    
-        if (!oldData) throw new Error(`No se encontro al usuario`);
+        const oldData = await User.findById(id);
+        if (!oldData) throw new Error(`No se encontró al usuario`);
 
         if (picture && oldData.picture) {
             const filePath = path.join(
                 __dirname,
-                "..",
-                "..",
-                "uploads",
-                oldData.picture
+                "..", "..", "uploads", oldData.picture
             );
-        fs.unlink(filePath, (error) => {
-            if (error)
-                throw new Error(
-                `Hubo un error al querer eliminar la imagen: ${error.message}`
-                );
+            fs.unlink(filePath, (error) => {
+                if (error) {
+                    throw new Error(`Error al eliminar la imagen anterior: ${error.message}`);
+                }
             });
         }
 
-        const updatedUser = await User.findOneAndUpdate(
-            { email: email },
-            {
-                ...data,
-            },
-            {
-              new: true, // Devuelve el usuario actualizado
-                runValidators: true,
-            }
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { ...data },
+            { new: true, runValidators: true }
         );
-    
+
         return updatedUser;
-    
     } catch (error) {
-        console.error(error);
-    throw new Error(
-        `Hubo un error al actualizar los datos del usuario ${error}`
-        );
+        throw new Error(`Error al actualizar usuario por ID: ${error.message}`);
     }
 };
+
 
 //Eliminar un usuario por id
 export const deleteUserById = async (id) => {
     try {
         const deletedUser = await User.findByIdAndDelete(id);
-        if(!deletedUser) throw new Error(`No se encontro al usuario`);
-        
-        const filePath = path.join(
-            __dirname,
-            "..",
-            "..",
-            "uploads",
-            userDeleted.picture
-        );
-        fs.unlink(filePath, (error) => {
-            if(error)
-            throw new Error('Hubo un error al querer eliminr la imagen');
-        });
+        if (!deletedUser) throw new Error(`No se encontró al usuario`);
+
+        // Eliminar imagen solo si existe
+        if (deletedUser.picture) {
+            const filePath = path.join(
+                __dirname,
+                "..",
+                "..",
+                "uploads",
+                deletedUser.picture
+            );
+            fs.unlink(filePath, (error) => {
+                if (error) {
+                    console.error("Error eliminando imagen:", error.message);
+                }
+            });
+        }
 
         // Eliminar los favoritos relacionados con este usuario
         await Favorite.findOneAndDelete({ idUser: id });
@@ -199,9 +190,10 @@ export const deleteUserById = async (id) => {
         return deletedUser;
     } catch (error) {
         console.error(error);
-    throw new Error(`Hubo un error al eliminar al usuario ${error.message}`);
+        throw new Error(`Hubo un error al eliminar al usuario: ${error.message}`);
     }
 };
+
 
 // Cambiar el rol de un usuario
 export const changeUserRole = async (id, role) => {
