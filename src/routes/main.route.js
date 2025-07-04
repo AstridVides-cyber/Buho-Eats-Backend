@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { userRouter } from "./user.route.js";
 import { restaurantRouter } from "./restaurante.route.js";
-import { pictureRouter } from "./picture.route.js";//Falta
+import { pictureRouter } from "./picture.route.js";
 import { reviewRouter } from "./review.route.js";
 import { favoriteRouter } from "./favorite.route.js";
 import { promotionRouter } from "./promotion.route.js";
-import { menuRouter } from "./menu.route.js";//Falta
-import { plateRouter } from "./plate.route.js";//Falta
+import { menuRouter } from "./menu.route.js";
+import { plateRouter } from "./plate.route.js";
 import { timeRangeRouter } from "./date.route.js";
 import { blockRouter } from "./block.route.js";
 import { coordinateRouter } from "./coordinate.route.js";
@@ -36,8 +36,6 @@ mainRouter.use("/api/timeRange", timeRangeRouter);
 
 // Rutas de coordenadas:D
 mainRouter.use("/api/coordenadas", coordinateRouter);
-
-
 
 // Ruta para el menú de un restaurante
 mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter); 
