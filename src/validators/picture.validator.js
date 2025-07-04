@@ -27,39 +27,38 @@ export const validateCreatePicture = [
 export const validateAddPictures = [
     body("id")
         .exists()
-        .notEmpty()
+        .withMessage("El id es obligatorio")
+        .bail()
         .isMongoId()
-        .withMessage("El id debe ser un ID de Mongo valido"),
+        .withMessage("El id debe ser un ID de Mongo válido"),
 
-    body("url").custom((value, { req }) => {
-        const hasFiles = req.files && req.files.length > 0;
-        const hasUrls = value && Array.isArray(value) && value.length > 0;
+        body("url").custom((value, { req }) => {
+            const hasFiles = req.files && req.files.length > 0;
+        
+            const hasUrls = Array.isArray(req.body.url)
+                ? req.body.url.some((url) => typeof url === "string" && url.startsWith("http"))
+                : typeof req.body.url === "string" && req.body.url.startsWith("http");
+        
+            if (!hasFiles && !hasUrls) {
+                throw new Error("Debe enviar al menos una imagen (archivo o URL)");
+            }
+        
+            if (hasFiles) {
+                const validExtensions = [".jpg", ".jpeg", ".png"];
+                req.files.forEach((file) => {
+                    const ext = path.extname(file.originalname).toLowerCase();
+                    if (!validExtensions.includes(ext)) {
+                        throw new Error(
+                            `Solo se permiten imágenes con extensiones: ${validExtensions.join(", ")}`
+                        );
+                    }
+                });
+            }
+        
+            return true;
+        }),
+        
 
-        if (!hasFiles && !hasUrls) {
-            throw new Error("Debe enviar al menos una imagen (archivo o URL)");
-        }
-
-        if (hasFiles) {
-            const validExtensions = [".jpg", ".jpeg", ".png"];
-            req.files.forEach((file) => {
-                const fileExtension = path.extname(file.originalname);
-                if (!validExtensions.includes(fileExtension)) {
-                    throw new Error(
-                        `Solo se permiten imágenes con las extensiones: ${validExtensions.join(", ")}`
-                    );
-                }
-            });
-        }
-
-        if (hasUrls) {
-            value.forEach((url) => {
-                if (typeof url !== "string" || !url.startsWith("http")) {
-                    throw new Error("Cada URL debe ser una cadena válida que empiece con http o https");
-                }
-            });
-        }
-        return true;
-    }),
     (req, res, next) => {
         validateResult(req, res, next);
     },
