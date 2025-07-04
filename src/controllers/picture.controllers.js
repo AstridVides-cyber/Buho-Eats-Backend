@@ -48,7 +48,7 @@ export const addPicturesController = async (req, res, next) => {
 
         let picturesToAdd = [];
 
-        // Archivos subidos (locales)
+        // Archivos subidos (locales )
         if (req.files && req.files.length > 0) {
             const fileNames = req.files.map((file) => file.filename);
             picturesToAdd.push(...fileNames);
