@@ -142,13 +142,16 @@ export const getAllUsersController = async (req, res, next) => {
 
 // Obtener usuario por ID
 export const getUserByIdController = async (req, res, next) => {
-    const { email } = req.body;
+    const { id } = req.body;
     try {
-        const user = await findUserByEmail(email);
+        const user = await User.findById(id).populate("favorites");
 
         if (!user) throw new createError(404, "No se encontro al usuario");
 
-        res.status(200).json({ message: "Se obtuvieron los datos del usuario", data: user });
+        res.status(200).json({ 
+            message: "Se obtuvieron los datos del usuario", 
+            data: user 
+        });
     } catch (error) {
         next(error);
     }

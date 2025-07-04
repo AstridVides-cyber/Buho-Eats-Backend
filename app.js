@@ -8,9 +8,6 @@ import { errorHandler } from './src/middlewares/error.middleware.js';
 // Cargar variables de entorno
 dotenv.config();
 
-// Verificar que JWT_SECRET está correctamente cargado
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
-
 const app = express();
 connectiondb();
 

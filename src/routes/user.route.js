@@ -45,7 +45,7 @@ userRouter.get("/all", verifyToken, getAllUsersController);
 userRouter.get("/:id", verifyToken, getUserByIdController);
 
 // Actualizar usuario:D//revisar
-userRouter.put("/:id", validateUpdateUser, upload.single('picture'), updateUserController);
+userRouter.put("/:id", verifyToken, validateUpdateUser, upload.single('picture'), updateUserController);
 
 // Eliminar usuario:D
 userRouter.delete("/:id", verifyToken, deleteUserController);
