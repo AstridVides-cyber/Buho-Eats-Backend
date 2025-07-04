@@ -12,13 +12,12 @@ import {
     validateDeleteRestaurant, 
     validateGetRestaurantById 
 } from "../validators/restaurante.validator.js";
-import { upload } from "../middlewares/multer.middleware.js";
 import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const restaurantRouter = Router();
 
 // Crear restaurante:D
-restaurantRouter.post("/create", verifyToken, upload.single('image'),validateCreateRestaurant, createRestaurantController);
+restaurantRouter.post("/create", verifyToken, validateCreateRestaurant, createRestaurantController);
 
 // Obtener todos los restaurantes:
 restaurantRouter.get("/all", getRestaurantsController);

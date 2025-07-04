@@ -1,7 +1,6 @@
 import { body, param } from "express-validator";
-import { AUTHCODE, PASSWORD, PICTURE } from "../utils/regex/regex.js";
 import { validateResult } from "../utils/helpers/validate.helper.js";
-import { query } from 'express-validator';
+import { validateImageString } from "../utils/helpers/image.helper.js";
 
 const allowedRoles = ["cliente", "restAdmin", "sysAdmin"];
 
@@ -30,6 +29,10 @@ export const validateCreateUser = [
         .exists()
         .isString()
         .withMessage("La contraseña es obligatoria"),
+
+    body("picture")
+        .optional()
+        .custom(validateImageString),
 
     
     (req, res, next) => {
@@ -64,6 +67,10 @@ export const validateUpdateUser = [
         .optional()
         .isString()
         .withMessage("La contraseña debe ser una cadena de caracteres"),
+
+    body("picture")
+        .optional()
+        .custom(validateImageString),
 
     body("rol")
         .optional()
@@ -116,34 +123,3 @@ export const validateRemoveRestaurantFromFavorites = [
         validateResult(req, res, next);
     },
 ];
-
-// Validación para el callback de Google OAuth
-export const validateCallback = [
-    query("id_token")
-        .notEmpty()
-        .isString(),
-    (req, res, next) => {
-        validateResult(req, res, next);
-    },
-];
-
-export const validateGetUser = [
-    body("email").exists().notEmpty().isEmail().isLength({ min: 10 }),
-    (req, res, next) => {
-        validateResult(req, res, next);
-        },
-    ];
-    
-    export const validateLogin = [
-        body("email").exists().notEmpty().isEmail().isLength({ min: 10 }),
-        body("password")
-            .notEmpty()
-            .isString()
-            .matches(PASSWORD)
-            .withMessage(
-            "La contraseña debe ser de minimo 6 caracteres y contener numeros y letras"
-        ),
-    (req, res, next) => {
-        validateResult(req, res, next);
-    },
-];  

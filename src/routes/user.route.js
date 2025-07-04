@@ -20,7 +20,6 @@ import {
     validateAddRestaurantToFavorites, 
     validateRemoveRestaurantFromFavorites 
 } from "../validators/user.validator.js";
-import { upload } from "../middlewares/multer.middleware.js"
 import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
@@ -36,7 +35,7 @@ userRouter.get('/authorize', getAuthorizeUrlController);
 userRouter.post('/login', generateTokenController);
 
 // Crear usuario:D
-userRouter.post("/create",  validateCreateUser,  upload.single('picture'), createUserController);
+userRouter.post("/create",  validateCreateUser, createUserController);
 
 // Ruta para obtener todos los usuarios:D
 userRouter.get("/all", getAllUsersController);
@@ -45,7 +44,7 @@ userRouter.get("/all", getAllUsersController);
 userRouter.get("/:id", getUserByIdController);
 
 // Actualizar usuario:D
-userRouter.put("/:id", verifyToken, validateUpdateUser, upload.single('picture'), updateUserController);
+userRouter.put("/:id", verifyToken, validateUpdateUser, updateUserController);
 
 // Eliminar usuario:D/////
 userRouter.delete("/:id", verifyToken, deleteUserController);

@@ -8,12 +8,7 @@ import {
 import createError from "http-errors";
 
 export const createPlateController = async (req, res, next) => {
-    const image = req.file ? req.file.filename : null;
-    let platesData = req.body;
-
-    if (image) {
-        platesData = { ...platesData, image: image }; 
-    }
+    const platesData = req.body;
 
     try {
         const plates = await createPlate(platesData);  
@@ -53,22 +48,15 @@ export const findPlateByIdController = async (req, res, next) => {
 }
 
 export const updatePlateController = async (req, res, next) => {
-    const image = req.file ? req.file.filename : null;
     const { id } = req.params;
-    let data = req.body;
-
-    if(image)
-        data = {
-        ...data,
-        image: image
-        }
+    const data = req.body;
 
     try {
     const existPlate = await findPlateById(id);
 
     if (!existPlate) throw new createError(404, "No se encontro el plato");
 
-    await updatePlateById(id, data, existPlate.image);
+    await updatePlateById(id, data);
 
     res.status(200).json({ message: 'Se actualizo el plato' });
     } catch (error) {
@@ -84,7 +72,7 @@ export const deletePlateController = async (req, res, next) => {
 
         if (!existPlate) throw new createError(404, "No se encontro el plato");
 
-        await deletePlateById(id, existPlate.image);
+        await deletePlateById(id);
 
         res.status(200).json({ message: 'Se elimino el plato' })
     } catch (error) {

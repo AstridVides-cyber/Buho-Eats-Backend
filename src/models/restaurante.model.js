@@ -13,6 +13,10 @@ const restaurantSchema = new Schema({
         type: String,
         required: true,
     },
+    image: {
+        type: String,
+        required: false,
+    },
     email: {
         type: String,
         required: true,
