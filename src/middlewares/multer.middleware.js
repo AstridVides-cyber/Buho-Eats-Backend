@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 
-//Configuracion del almacenamiento de las imagenes
+//Configuracion del almacenamiento de las imagenes 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploads')

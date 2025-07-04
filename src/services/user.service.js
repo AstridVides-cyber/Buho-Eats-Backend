@@ -12,7 +12,7 @@ import createError from "http-errors";
 
 
 const JWT_SECRET = process.env.JWT_SECRET;
-const expires = Math.floor(Date.now() / 1000) + (2 * 60 * 60);
+const expires = Math.floor(Date.now() / 1000) + (48 * 60 * 60);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

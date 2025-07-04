@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
     addPicturesController,
     createPictureController,
-    deletePictureController,
+    deletePictureController, 
     findPictureByIdController,
     getPicturesController,
     removePicturesController,

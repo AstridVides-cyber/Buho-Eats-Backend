@@ -1,13 +1,16 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
 
+const allowedRoles = ["cliente", "restAdmin", "sysAdmin"];
+
 // Validación para crear un usuario
 export const validateCreateUser = [
     body("name")
-        .exists()
-        .notEmpty()
-        .isString()
-        .withMessage("El nombre es obligatorio"),
+    .exists()
+    .notEmpty()
+    .isString()
+    .isLength({ min: 3 })
+    .withMessage("El nombre tiene que tener mas de 3 caracteres"),
 
     body("lastName")
         .exists()

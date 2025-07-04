@@ -5,8 +5,8 @@ import { Favorite } from "../models/favorite.model.js";
 import { 
     saveUser,
     getToken,
-    generateUrlAuthorize,
-    getUserData,
+  //  generateUrlAuthorize,
+   // getUserData,
     getAllUsers, 
     findUserByEmail, 
     updateUserByEmail, 

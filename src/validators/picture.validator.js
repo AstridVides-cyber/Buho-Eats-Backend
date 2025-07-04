@@ -14,8 +14,9 @@ export const validateCreatePicture = [
         .exists()
         .isArray()
         .withMessage("La URL de la imagen es obligatoria")
-        .matches(PICTURE)
-        .withMessage("La imagen deber ser de extension jpg, jpeg o png"),
+        .isURL()
+        .withMessage('Debe ser una URL válida'),
+        
 
     (req, res, next) => {
         validateResult(req, res, next);
