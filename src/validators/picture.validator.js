@@ -32,20 +32,32 @@ export const validateAddPictures = [
         .withMessage("El id debe ser un ID de Mongo valido"),
 
     body("url").custom((value, { req }) => {
-        if (!req.files || req.files.length === 0) {
-        throw new Error("Debe enviar al menos una imagen");
+        const hasFiles = req.files && req.files.length > 0;
+        const hasUrls = value && Array.isArray(value) && value.length > 0;
+
+        if (!hasFiles && !hasUrls) {
+            throw new Error("Debe enviar al menos una imagen (archivo o URL)");
         }
-        req.files.forEach((file) => {
-        const validExtensions = [".jpg", ".jpeg", ".png"];
-        const fileExtension = path.extname(file.originalname);
-        if (!validExtensions.includes(fileExtension)) {
-            throw new Error(
-            `Solo se permiten imágenes con las extensiones: ${validExtensions.join(
-                ", "
-            )}`
-            );
+
+        if (hasFiles) {
+            const validExtensions = [".jpg", ".jpeg", ".png"];
+            req.files.forEach((file) => {
+                const fileExtension = path.extname(file.originalname);
+                if (!validExtensions.includes(fileExtension)) {
+                    throw new Error(
+                        `Solo se permiten imágenes con las extensiones: ${validExtensions.join(", ")}`
+                    );
+                }
+            });
         }
-    });
+
+        if (hasUrls) {
+            value.forEach((url) => {
+                if (typeof url !== "string" || !url.startsWith("http")) {
+                    throw new Error("Cada URL debe ser una cadena válida que empiece con http o https");
+                }
+            });
+        }
         return true;
     }),
     (req, res, next) => {
