@@ -142,9 +142,9 @@ export const getAllUsersController = async (req, res, next) => {
 
 // Obtener usuario por ID
 export const getUserByIdController = async (req, res, next) => {
-    const { id } = req.body;
+    const { email } = req.body;
     try {
-        const user = await User.findById(id).populate("favorites");
+        const user = await findUserByEmail(email);
 
         if (!user) throw new createError(404, "No se encontro al usuario");
 
