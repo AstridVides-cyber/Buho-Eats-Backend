@@ -39,10 +39,10 @@ userRouter.post('/login', generateTokenController);
 userRouter.post("/create",  validateCreateUser,  upload.single('picture'), createUserController);
 
 // Ruta para obtener todos los usuarios:D
-userRouter.get("/all", verifyToken, getAllUsersController);
+userRouter.get("/all", getAllUsersController);
 
 // Obtener usuario por ID:D
-userRouter.get("/:id", verifyToken, getUserByIdController);
+userRouter.get("/:id", getUserByIdController);
 
 // Actualizar usuario:D
 userRouter.put("/:id", verifyToken, validateUpdateUser, upload.single('picture'), updateUserController);

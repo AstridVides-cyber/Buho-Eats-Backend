@@ -12,6 +12,6 @@ const coordinateRouter = Router();
 coordinateRouter.post("/create", verifyToken, validateCoordinate, createCoordinateController);
 
 // Ruta para obtener todas las coordenadas
-coordinateRouter.get("/all", verifyToken, getCoordinatesController);
+coordinateRouter.get("/all", getCoordinatesController);
 
 export { coordinateRouter };

@@ -1,6 +1,8 @@
 import { body, param } from "express-validator";
 import { validateResult } from "../utils/helpers/validate.helper.js";
+import { PICTURE } from "../utils/regex/regex.js"; 
 
+// Validación para crear un plato
 export const validateCreatePlate = [
     body("name")
         .exists()
@@ -12,88 +14,96 @@ export const validateCreatePlate = [
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("La descripción del plato es obligatoria"),
+        .withMessage(
+        "La descripcion del plato es obligatoria"
+        ),
 
     body("category")
         .exists()
         .notEmpty()
         .isString()
-        .withMessage("La categoría del plato es obligatoria"),
+        .withMessage(
+        "La categoria del plato es obligatoria"
+        ),
 
     body("price")
         .exists()
         .notEmpty()
         .isNumeric()
-        .withMessage("El precio debe ser un número"),
+        .withMessage("El precio debe ser un numero"),
 
-    body("image")
-        .exists()
-        .notEmpty()
+        body("image")
+        .optional()
         .isString()
         .withMessage("La imagen es obligatoria"),
+    
 
     (req, res, next) => {
         validateResult(req, res, next);
-    }
+    },
 ];
 
+// Validación para actualizar un plato
 export const validateUpdatePlate = [
     param("id")
         .exists()
         .isMongoId()
-        .withMessage("El ID del plato debe ser un ObjectId válido"),
+        .withMessage("Debe ser un id valido de Mongo"),
 
     body("name")
         .optional()
         .notEmpty()
         .isString()
-        .withMessage("El nombre debe ser una cadena de texto"),
+        .withMessage("El nombre del plato debe ser una cadena de texto"),
 
     body("description")
         .optional()
         .notEmpty()
         .isString()
-        .withMessage("La descripción debe ser una cadena de texto"),
+        .withMessage("La descripcion del plato debe ser una cadena de texto"),
 
     body("category")
         .optional()
         .notEmpty()
         .isString()
-        .withMessage("La categoría debe ser una cadena de texto"),
+        .withMessage("La categoria del plato debe ser una cadena de texto"),
 
     body("price")
         .optional()
         .isNumeric()
-        .withMessage("El precio debe ser un número"),
+        .withMessage("El precio debe ser un numero"),
 
     body("image")
         .optional()
         .isString()
-        .withMessage("La imagen debe ser una URL válida"),
+        .matches(PICTURE) // Validación de la imagen
+        .withMessage("La imagen debe tener una extension valida"),
 
-    (req, res, next) => {
-        validateResult(req, res, next);
-    }
-];
-
-export const validateGetPlateById = [
-    param('id')
-        .exists()
-        .isMongoId()
-        .withMessage('Debe ser un id valido de Mongo'),
-    
     (req, res, next) => {
         validateResult(req, res, next);
     },
-]
+];
 
+// Validación para obtener un plato por ID
+export const validateGetPlateById = [
+    param("id")
+        .exists()
+        .isMongoId()
+        .withMessage("Debe ser un id valido de Mongo"),
+
+    (req, res, next) => {
+        validateResult(req, res, next);
+    },
+];
+
+// Validación para eliminar un plato
 export const validateDeletePlate = [
     param("id")
         .exists()
         .isMongoId()
-        .withMessage("El ID debe ser un ObjectId válido"),
-        
+        .withMessage("Debe ser un id valido de Mongo"),
+
     (req, res, next) => {
         validateResult(req, res, next);
-    }
+    },
 ];

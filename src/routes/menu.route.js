@@ -15,10 +15,10 @@ const menuRouter = Router();
 menuRouter.post("/create", verifyToken, createMenuController);
 
 // Obtener todos los menús
-menuRouter.get("/all", verifyToken, getAllMenusController);
+menuRouter.get("/all", getAllMenusController);
 
 // Obtener un menú por ID
-menuRouter.get("/:menuId", verifyToken, getMenuByIdController);
+menuRouter.get("/:menuId", getMenuByIdController);
 
 // Actualizar un menú por ID
 menuRouter.put("/:menuId", verifyToken, validateMenuId, updateMenuController);

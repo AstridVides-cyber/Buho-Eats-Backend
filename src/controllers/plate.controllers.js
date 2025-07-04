@@ -1,70 +1,91 @@
 import { 
     createPlate, 
+    deletePlateById, 
     findAllPlates, 
     findPlateById, 
-    updatePlateById, 
-    deletePlateById 
+    updatePlateById 
 } from "../services/plate.service.js";
 import createError from "http-errors";
 
-// Crear un plato
 export const createPlateController = async (req, res, next) => {
-    const { url, idRestaurant } = req.body; // URL de la imagen y ID del restaurante
+    const image = req.file.filename;
+    let platesData = req.body;
+
+    platesData = { ...platesData, image: image };
+
     try {
-        // Creamos una imagen primero en el servicio de Picture
-        const picture = new Picture({ url, idRestaurant });
-        const savedPicture = await picture.save();  // Guardamos la imagen
+    const plates = await createPlate(platesData);
 
-        // Ahora pasamos la imagen guardada en el objeto para crear el plato
-        const plateData = { ...req.body, image: savedPicture._id }; // Asocian la imagen al plato
-        const plate = await createPlate(plateData); // Guardamos el plato
-
-        res.status(201).json({ message: "Plato creado con éxito", data: plate });
+    res.status(201).json({ message: "Se crearon los platos", data: plates });
     } catch (error) {
         next(error);
     }
 };
 
-// Obtener todos los platos
 export const findAllPlatesController = async (req, res, next) => {
     try {
-        const plates = await findAllPlates();
-        res.status(200).json({ data: plates });
+    const plates = await findAllPlates();
+
+    if(!plates)
+        throw new createError(404, 'No se encontraron platos');
+
+    res.status(200).json({ data: plates });
     } catch (error) {
         next(error);
     }
-};
+}
 
-// Obtener un plato 
 export const findPlateByIdController = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const plate = await findPlateById(id);
+    const plate = await findPlateById(id);
+
+    if(!plate)
+        throw new createError(404, 'No se encontro el plato');
+
         res.status(200).json({ data: plate });
+
     } catch (error) {
         next(error);
     }
-};
+}
 
-// Actualizar plato
 export const updatePlateController = async (req, res, next) => {
+    const image = req.file ? req.file.filename : null;
     const { id } = req.params;
-    const plateData = req.body;
+    let data = req.body;
+
+    if(image)
+        data = {
+        ...data,
+        image: image
+        }
+
     try {
-        const updatedPlate = await updatePlateById(id, plateData);
-        res.status(200).json({ message: "Plato actualizado con éxito", data: updatedPlate });
+    const existPlate = await findPlateById(id);
+
+    if (!existPlate) throw new createError(404, "No se encontro el plato");
+
+    await updatePlateById(id, data, existPlate.image);
+
+    res.status(200).json({ message: 'Se actualizo el plato' });
     } catch (error) {
         next(error);
     }
 };
 
-// Eliminar plato
 export const deletePlateController = async (req, res, next) => {
     const { id } = req.params;
+
     try {
-        const deletedPlate = await deletePlateById(id);
-        res.status(200).json({ message: "Plato eliminado con éxito", data: deletedPlate });
+        const existPlate = await findPlateById(id);
+
+        if (!existPlate) throw new createError(404, "No se encontro el plato");
+
+        await deletePlateById(id, existPlate.image);
+
+        res.status(200).json({ message: 'Se elimino el plato' })
     } catch (error) {
         next(error);
     }
-};
+}

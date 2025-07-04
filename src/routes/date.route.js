@@ -12,6 +12,6 @@ const timeRangeRouter = Router();
 timeRangeRouter.post("/create", verifyToken, validateCreateTimeRange, createTimeRangeController);
 
 // Ruta para obtener un rango de tiempo por ID
-timeRangeRouter.get("/:id", verifyToken, findTimeRangeByIdController);
+timeRangeRouter.get("/:id", findTimeRangeByIdController);
 
 export { timeRangeRouter };

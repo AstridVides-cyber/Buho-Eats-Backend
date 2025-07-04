@@ -17,11 +17,16 @@ const plateSchema = new Schema({
         type: Number,
         required: true,
     },
-    image: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Picture',  
-        required: true,
+    picture: { 
+        type: String, 
+        required: true 
     },
+    idRestaurant: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Restaurant", 
+        required: true 
+    },
+
 });
 
 export const Plate = model('Plate', plateSchema);

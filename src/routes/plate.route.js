@@ -21,10 +21,10 @@ const plateRouter = Router();
 plateRouter.post('/create', verifyToken, upload.single('image'), validateCreatePlate, createPlateController);
 
 // Obtener todos los platos
-plateRouter.get('/allPlates', verifyToken, findAllPlatesController);
+plateRouter.get('/all', findAllPlatesController);
 
 // Obtener un plato por ID
-plateRouter.get('/:id', verifyToken, validateGetPlateById, findPlateByIdController);
+plateRouter.get('/:id', validateGetPlateById, findPlateByIdController);
 
 // Actualizar un plato
 plateRouter.put('/:id', verifyToken, upload.single('image'), validateUpdatePlate, updatePlateController);
