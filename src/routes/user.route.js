@@ -16,7 +16,6 @@ import {
     validateCreateUser, 
     validateUpdateUser, 
     validateChangeRole, 
-    validateCallback,
     validateAddRestaurantToFavorites, 
     validateRemoveRestaurantFromFavorites 
 } from "../validators/user.validator.js";
@@ -25,7 +24,7 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 const userRouter = Router();
 
 // Ruta auth
-userRouter.post('/auth', validateCallback, googleCallBackController);
+userRouter.post('/auth', googleCallBackController);
 
 // Ruta authorize
 userRouter.get('/authorize', getAuthorizeUrlController);
