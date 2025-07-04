@@ -42,20 +42,24 @@ export const addPicturesController = async (req, res, next) => {
     try {
         const { id } = req.body;
 
-        //Guarda en las variables un objeto que contiene el atributo url
-        const fileName = req.files.map((file) => ({
-        url: file.filename,
-        }));
-
-        //Se mapea para extraer la url y guardarla en un arreglo de string
-        const urls = fileName.map((picture) => picture.url);
-
         const existPicture = await findPictureById(id);
-
         if (!existPicture)
-        throw new createError(404, "No se encontraron las imagenes");
+            throw new createError(404, "No se encontraron las imagenes");
 
-        await addPictures(urls, id);
+        let picturesToAdd = [];
+
+        // Archivos subidos (locales)
+        if (req.files && req.files.length > 0) {
+            const fileNames = req.files.map((file) => file.filename);
+            picturesToAdd.push(...fileNames);
+        }
+
+        // URLs proporcionadas
+        if (req.body.url && Array.isArray(req.body.url)) {
+            picturesToAdd.push(...req.body.url);
+        }
+
+        await addPictures(picturesToAdd, id);
 
         res.status(200).json({ message: "Se agregaron las imagenes" });
     } catch (error) {
