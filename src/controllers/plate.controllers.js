@@ -8,15 +8,17 @@ import {
 import createError from "http-errors";
 
 export const createPlateController = async (req, res, next) => {
-    const image = req.file.filename;
+    const image = req.file ? req.file.filename : null;
     let platesData = req.body;
 
-    platesData = { ...platesData, image: image };
+    if (image) {
+        platesData = { ...platesData, image: image }; 
+    }
 
     try {
-    const plates = await createPlate(platesData);
+        const plates = await createPlate(platesData);  
 
-    res.status(201).json({ message: "Se crearon los platos", data: plates });
+        res.status(201).json({ message: "Se crearon los platos", data: plates });
     } catch (error) {
         next(error);
     }
