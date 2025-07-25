@@ -5,8 +5,7 @@ import { Favorite } from "../models/favorite.model.js";
 import { 
     saveUser,
     getToken,
-  //  generateUrlAuthorize,
-   // getUserData,
+    loginGoogleByIdToken,
     getAllUsers, 
     findUserByEmail, 
     updateUserById, 
@@ -41,7 +40,28 @@ export const createUserController = async (req, res, next) => {
     }
 };
 
+// Login con Google
+export const loginWithGoogleController = async (req, res, next) => {
+    const { id_token } = req.body;
+    try {
+        if (!id_token) {
+            throw createError(400, "El id_token es requerido");
+        }
+        const { user, token } = await loginGoogleByIdToken(id_token);
 
+        res.status(200).json({
+            message: "Inicio de sesión exitoso con Google",
+            user,
+            token
+        });
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+// Generar URL de autorización
 export const getAuthorizeUrlController = async (req, res, next) => {
     try {
         const authorize = await generateUrlAuthorize();
@@ -82,7 +102,7 @@ export const generateTokenController = async (req, res, next) => {
     }
 };
 
-
+// Callback de Google
 export const googleCallBackController = async (req, res, next) => {
     const { code } = req.query;
     try {

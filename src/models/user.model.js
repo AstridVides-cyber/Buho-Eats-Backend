@@ -7,8 +7,10 @@ const userSchema = new Schema({
     },
     lastName: {
         type: String,
-        required: true,
-    },
+        required: function () {
+        return !this.isGoogle;
+    }
+},
     email: {
         type: String,
         required: true,
@@ -22,10 +24,18 @@ const userSchema = new Schema({
         type: String,
         required: false,
     },
+    isGoogle: {
+    type: Boolean,
+    default: false
+    },
     rol: {
         type: String,
         required: true,
         enum: ['cliente', 'restAdmin', 'sysAdmin'],
+        default: 'cliente',
+        required: function () {
+        return !this.isGoogle;
+    }
     },
     favorites: [
         {

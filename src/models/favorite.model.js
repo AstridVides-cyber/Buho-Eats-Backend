@@ -6,11 +6,11 @@ const favoriteSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    idRestaurant: { 
+    idRestaurant: [{ 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true,
-    },
+    }],
 });
 
 export const Favorite = model('Favorite', favoriteSchema);

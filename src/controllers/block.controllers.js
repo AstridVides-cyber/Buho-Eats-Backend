@@ -2,7 +2,7 @@ import {
     createBlock, 
     deleteBlock 
 } from "../services/block.service.js";
-import createError from "http-errors";
+//import createError from "http-errors";
 
 // Bloquear un usuario
 export const createBlockController = async (req, res, next) => {

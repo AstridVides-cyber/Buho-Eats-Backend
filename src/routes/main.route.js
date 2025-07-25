@@ -11,6 +11,7 @@ import { timeRangeRouter } from "./date.route.js";
 import { blockRouter } from "./block.route.js";
 import { coordinateRouter } from "./coordinate.route.js";
 
+
 const mainRouter = Router();
 
 // Ruta para los usuarios:D
@@ -44,6 +45,6 @@ mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter);
 mainRouter.use('/api/restaurante/:restaurantId/menu/plato', plateRouter);
 
 // Ruta para las imágenes
-mainRouter.use('/api/picture', pictureRouter); 
+mainRouter.use('/api/picture', pictureRouter);
 
 export { mainRouter };

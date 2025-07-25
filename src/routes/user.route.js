@@ -1,16 +1,14 @@
 import { Router } from "express";
 import { 
     createUserController,
-    getAuthorizeUrlController,
-    googleCallBackController,
     getAllUsersController, 
     getUserByIdController, 
     updateUserController, 
     deleteUserController,
-    generateTokenController, 
     changeUserRoleController, 
     addRestaurantToFavoritesController, 
-    removeRestaurantFromFavoritesController 
+    removeRestaurantFromFavoritesController, 
+    loginWithGoogleController
 } from "../controllers/user.controllers.js";
 import { 
     validateCreateUser, 
@@ -23,15 +21,6 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
 
-// Ruta auth
-userRouter.post('/auth', googleCallBackController);
-
-// Ruta authorize
-userRouter.get('/authorize', getAuthorizeUrlController);
-
-
-// Ruta de login
-userRouter.post('/login', generateTokenController);
 
 // Crear usuario:D
 userRouter.post("/create",  validateCreateUser, createUserController);
@@ -56,5 +45,8 @@ userRouter.post("/:idUser/favoritos/add", verifyToken, validateAddRestaurantToFa
 
 // Eliminar restaurante de favoritos:D
 userRouter.delete("/:idUser/favoritos/remove", verifyToken, validateRemoveRestaurantFromFavorites, removeRestaurantFromFavoritesController);
+
+// Ruta para obtener la URL de autorización de Google
+userRouter.post("/auth/google", loginWithGoogleController)
 
 export { userRouter };
