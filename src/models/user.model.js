@@ -8,9 +8,9 @@ const userSchema = new Schema({
     lastName: {
         type: String,
         required: function () {
-        return !this.isGoogle;
-    }
-},
+        return !this.isGoogle; 
+    } // Last name is required only if the user is not registered via Google    
+    },
     email: {
         type: String,
         required: true,
@@ -31,8 +31,8 @@ const userSchema = new Schema({
     rol: {
         type: String,
         required: true,
-        enum: ['cliente', 'restAdmin', 'sysAdmin'],
-        default: 'cliente',
+        enum: ['cliente', 'restAdmin', 'sysAdmin'],  // Roles: cliente, restAdmin, sysAdmin
+        default: 'cliente', 
         required: function () {
         return !this.isGoogle;
     }
@@ -40,7 +40,7 @@ const userSchema = new Schema({
     favorites: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Favorite',  // Referencia a los favoritos:D
+            ref: 'Favorite',  // Reference to the favorite:D
         },
     ],
 });

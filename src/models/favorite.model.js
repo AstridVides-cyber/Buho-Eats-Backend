@@ -3,12 +3,12 @@ import mongoose, { Schema, model } from "mongoose";
 const favoriteSchema = new Schema({
     idUser: { 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User', // Reference to the user:D
         required: true,
     },
     idRestaurant: [{ 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant',
+        ref: 'Restaurant',  // Reference to the restaurant:D
         required: true,
     }],
 });

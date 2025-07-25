@@ -11,12 +11,12 @@ const reviewSchema = new Schema({
     },
     idUser: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User', // Reference to the user:D
         required: true,
     },
     idrestaurant: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'restaurant',
+        ref: 'restaurant', // Reference to the restaurant:D
         required: true,
     },
     

@@ -31,42 +31,42 @@ const restaurantSchema = new Schema({
     },
     idCoordinate: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Coordinate",
+        ref: "Coordinate", // Reference to the coordinates:D
         required: false,
     },
     idPictures: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Picture',
+        ref: 'Picture', // Reference to the pictures:D
         required: false,
     },
     idMenu: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Menu',
+        ref: 'Menu', // Reference to the menu:D
         required: false,
     },
     idPromotion: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Promotion',
+        ref: 'Promotion', // Reference to the promotions:D
         required: false,
     },
     idUser: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User', // Reference to the user:D
         required: true,
     },
     idReviews: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Review',
+        ref: 'Review',  // Reference to the reviews:D
         required: false,
     },
     idBlocks: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Block',
+        ref: 'Block',   // Reference to the blocks:D
         required: false,
     },
     idTimeRange: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'timeRange',
+        ref: 'timeRange', // Reference to the time range:D
         required: false,
     },
     onWait: {

@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from 'mongoose';
 
-const coordinateSchema = new Schema({
+const coordinateSchema = new Schema({  // Define the schema for coordinates
     lat: {
         type: Number,
         required: true
@@ -9,6 +9,6 @@ const coordinateSchema = new Schema({
         type: Number,
         required: true
     }
-});
+});  
 
 export const Coordinate = model('Coordinate', coordinateSchema);

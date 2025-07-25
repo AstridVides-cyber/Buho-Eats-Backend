@@ -23,7 +23,7 @@ const plateSchema = new Schema({
     },
     idRestaurant: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Restaurant", 
+        ref: "Restaurant",  // Reference to the restaurant:D
         required: true 
     },
 
