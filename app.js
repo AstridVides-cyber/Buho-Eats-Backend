@@ -5,7 +5,7 @@ import { connectiondb } from './src/config/dbconnetion.config.js';
 import { mainRouter } from './src/routes/main.route.js';
 import { errorHandler } from './src/middlewares/error.middleware.js';
 
-// Cargar variables de entorno
+// Configure environment variables
 dotenv.config();
 
 const app = express();
