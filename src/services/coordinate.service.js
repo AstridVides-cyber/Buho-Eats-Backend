@@ -1,5 +1,6 @@
 import { Coordinate } from "../models/coordinate.model.js";
 
+// Create a new coordinate
 export const createCoordinate = async (lat, lng) => {
     try {
         const coordinate = new Coordinate({ lat, lng });
@@ -10,6 +11,7 @@ export const createCoordinate = async (lat, lng) => {
     }
 };
 
+// Get a coordinate by ID
 export const findCoordinates = async () => {
     try {
         const coordinates = await Coordinate.find();

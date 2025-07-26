@@ -1,6 +1,6 @@
 import { Favorite } from "../models/favorite.model.js";
 
-// Crear un nuevo favorito
+// Create a new favorite
 export const createFavorite = async (idUser, idRestaurant) => {
     const newFavorite = new Favorite({
         idUser: idUser,
@@ -15,7 +15,7 @@ export const createFavorite = async (idUser, idRestaurant) => {
     }
 };
 
-// Obtener todos los favoritos
+// Get all favorites for a user
 export const findFavoritesByUserId = async (idUser) => {
     try {
         const favorite = await Favorite.findOne({ idUser: idUser }).populate('idRestaurant');
@@ -25,7 +25,7 @@ export const findFavoritesByUserId = async (idUser) => {
     }
 };
 
-// Eliminar un favorito
+// Remove a favorite by user ID and restaurant ID
 export const removeFavorite = async (idUser, restaurantId) => {
     try {
         const favorite = await Favorite.findOne({ idUser: idUser });

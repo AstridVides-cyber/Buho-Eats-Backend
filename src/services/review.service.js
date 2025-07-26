@@ -1,6 +1,6 @@
 import { Review } from "../models/review.model.js";
 
-// Crear una nueva reseña:D
+// Create a new review
 export const createReview = async (data) => {
     const newReview = new Review(data);
 
@@ -12,7 +12,7 @@ export const createReview = async (data) => {
     }
 };
 
-// Obtener todas las reseñas
+// Find all reviews for a restaurant
 export const findAllReviews = async () => {
     try {
         const reviews = await Review.find();
@@ -22,7 +22,7 @@ export const findAllReviews = async () => {
     }
 };
 
-// Obtener una reseña por su ID
+// Get a review by ID
 export const findReviewById = async (id) => {
     try {
         const review = await Review.findById(id);
@@ -32,7 +32,7 @@ export const findReviewById = async (id) => {
     }
 };
 
-// Eliminar una reseña por su ID
+// Delete a review by ID
 export const deleteReviewById = async (id) => {
     try {
         const deletedReview = await Review.findByIdAndDelete(id);

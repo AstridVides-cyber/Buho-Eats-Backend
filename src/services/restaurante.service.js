@@ -1,7 +1,7 @@
 import { Restaurant } from "../models/restaurante.model.js";
 import createError from "http-errors";
 
-// Crear restaurante
+// Create a new restaurant
 export const createRestaurant = async (data) => {
     try {
         const newRestaurant = new Restaurant(data);
@@ -11,7 +11,7 @@ export const createRestaurant = async (data) => {
     }
 };
 
-// Obtener restaurante por ID
+// Get a restaurant by ID
 export const findRestaurantById = async (id) => {
     try {
         const restaurant = await Restaurant.findById(id).populate("idUser");
@@ -22,7 +22,7 @@ export const findRestaurantById = async (id) => {
     }
 };
 
-// Obtener todos los restaurantes
+// Get all restaurants
 export const getRestaurants = async () => {
     try {
         const restaurants = await Restaurant.find();
@@ -32,7 +32,7 @@ export const getRestaurants = async () => {
     }
 };
 
-// Actualizar restaurante por ID
+// Update restaurant by ID
 export const updateRestaurantById = async (id, data) => {
     try {
         const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, data, {
@@ -46,7 +46,7 @@ export const updateRestaurantById = async (id, data) => {
     }
 };
 
-// Eliminar restaurante por ID
+// Delete restaurant by ID
 export const deleteRestaurantById = async (id) => {
     try {
         const deletedRestaurant = await Restaurant.findByIdAndDelete(id);

@@ -1,6 +1,6 @@
 import { Block } from "../models/block.model.js";
 
-// Crear un bloqueo
+// Create a new block
 export const createBlock = async (restaurantId, userId) => {
     try {
         const existingBlock = await Block.findOne({ blocker: restaurantId, blocked: userId });
@@ -14,7 +14,7 @@ export const createBlock = async (restaurantId, userId) => {
     }
 };
 
-// Desbloquear un usuario
+// Get all blocks for a restaurant
 export const deleteBlock = async (restaurantId, userId) => {
     try {
         const removedBlock = await Block.findOneAndDelete({ blocker: restaurantId, blocked: userId });

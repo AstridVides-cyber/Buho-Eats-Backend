@@ -1,6 +1,6 @@
 import { Picture } from "../models/picture.model.js";
 
-//Aguarda la imagen
+// Create a new picture and save to the database
 export const saveImage = async (url, idRestaurant) => {
     try {
         const newPicture = new Picture({ url, idRestaurant });
@@ -12,13 +12,13 @@ export const saveImage = async (url, idRestaurant) => {
     }
 };
 
-//Agrega la imagen
+// Add pictures to a restaurant
 export const addPictures = async (picturesToAdd, id) => {
     try {
-        // Agregar nuevas imágenes si hay elementos en picturesToAdd
+        
         await Picture.findByIdAndUpdate(id, {
         $push: {
-            url: { $each: picturesToAdd }, // Agrega los nuevos ids al campo de referencias
+            url: { $each: picturesToAdd }, 
         },
         });
     } catch (error) {
@@ -26,15 +26,15 @@ export const addPictures = async (picturesToAdd, id) => {
     }
 };
 
-//Removerlo de la lista de imagenes
+// Remove pictures from a restaurant
 export const removePictures = async (picturesToRemove, id) => {
     try {
-        // Eliminara imagenes si hay elementos en picturesToRemove
+        // Delete pictures by their URLs
         const removed = await Picture.findByIdAndUpdate(
         id,
         {
             $pull: {
-            url: { $in: picturesToRemove }, // Eliminar fotos por url que coincidan en el arreglo
+            url: { $in: picturesToRemove }, // Remove pictures that match the URLs
             },
         },
         {
@@ -49,7 +49,7 @@ export const removePictures = async (picturesToRemove, id) => {
     }
 };
 
-//Obtener todas imagenes
+// Get all pictures
 export const findAllPictures = async () => {
     try {
         const pictures = await Picture.find();
@@ -60,7 +60,7 @@ export const findAllPictures = async () => {
     }
 };
 
-//Obtener la imagen por id
+// Get a picture by ID  
 export const findPictureById = async (id) => {
     try {
         const picture = await Picture.findById(id);
@@ -71,7 +71,7 @@ export const findPictureById = async (id) => {
     }
 };
 
-//Eliminar imagen de la base de datos
+// Delete a picture by ID
 export const deletePictureById = async (id) => {
     try {
         const pictureDeleted = await Picture.findByIdAndDelete(id);

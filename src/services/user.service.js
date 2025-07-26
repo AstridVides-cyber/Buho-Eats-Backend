@@ -9,10 +9,10 @@ import createError from "http-errors";
 const JWT_SECRET = process.env.JWT_SECRET;
 const expires = Math.floor(Date.now() / 1000) + (48 * 60 * 60);
 
-//Crear un nuevo usuario
+//Create a new user and save to the database
 export const saveUser = async (user, password, picture) => {
     try {
-        //Crear un nuevo usuario
+        //Create a new user instance
         let newUser;
         if (password) {
             const hashPassword = await encrypt(password);
@@ -29,7 +29,7 @@ export const saveUser = async (user, password, picture) => {
         }
         const savedUser = await newUser.save();
 
-        //Crear una entrada de favoritos vacia para este usuario
+        //Create a new favorite instance for the user
         const favorites = new Favorite({ idUser: savedUser._id, idRestaurant: []});
         await favorites.save();
 
@@ -40,7 +40,7 @@ export const saveUser = async (user, password, picture) => {
     }
 };
 
-// Generación de un token
+// Find a user by ID
 export const getToken = async (user, password) => {
     try {
         if (!await compare(password, user.password)) {
@@ -48,7 +48,7 @@ export const getToken = async (user, password) => {
         }
         const { _id, name } = user;
 
-        // Generar el token con una expiración de 48 horas
+        // Generate a JWT token
         const token = jwt.sign(
             { 
                 _id, 
@@ -66,7 +66,7 @@ export const getToken = async (user, password) => {
 };
 
 
-// Iniciar sesión con Google usando el ID Token
+// Login with Google using ID token
 export const loginGoogleByIdToken = async (id_token) => {
     try {
         const ticket = await client.verifyIdToken({
@@ -99,7 +99,7 @@ export const loginGoogleByIdToken = async (id_token) => {
 };
 
 
-// Obtener todos los usuarios
+// Get all users from the database
 export const getAllUsers = async () => {
     try {
         const users = await User.find(); 
@@ -111,7 +111,7 @@ export const getAllUsers = async () => {
 };
 
 
-//Obtener un usuario por email
+//  Find a user by email
 export const findUserByEmail = async (email, toCreate) => {
     try {
         const user = await User.findOne({ email: email }).populate("favorites");
@@ -124,7 +124,7 @@ export const findUserByEmail = async (email, toCreate) => {
     }
 };
 
-// Actualizar un usuario por email
+// Update user by ID
 export const updateUserById = async (id, data) => {
     try {
         const oldData = await User.findById(id);
@@ -143,13 +143,13 @@ export const updateUserById = async (id, data) => {
 };
 
 
-//Eliminar un usuario por id
+//  Delete user by ID
 export const deleteUserById = async (id) => {
     try {
         const deletedUser = await User.findByIdAndDelete(id);
         if (!deletedUser) throw new Error(`No se encontró al usuario`);
 
-        // Eliminar los favoritos relacionados con este usuario
+        // Delete the user's favorites
         await Favorite.findOneAndDelete({ idUser: id });
 
         return deletedUser;
@@ -160,10 +160,10 @@ export const deleteUserById = async (id) => {
 };
 
 
-// Cambiar el rol de un usuario
+//  Change user role by ID
 export const changeUserRole = async (id, role) => {
     try {
-        // Validar que el rol esté en los valores permitidos
+        //  Validate the role
         const validRoles = ['cliente', 'restAdmin', 'sysAdmin'];
         if (!validRoles.includes(role)) {
             throw createError(400, "Rol no válido");
@@ -181,22 +181,22 @@ export const changeUserRole = async (id, role) => {
     }
 };
 
-// Agregar restaurante a los favoritos del usuario
+//  Add restaurant to user's favorites
 export const addRestaurantToFavorites = async (idUser, idRestaurant) => {
     try {
-        // Verificar si el usuario y el restaurante existen
+        //  Verify if the user and restaurant exist
         const user = await User.findById(idUser);
         if (!user) throw createError(404, "Usuario no encontrado");
     
         const restaurant = await Restaurant.findById(idRestaurant);
         if (!restaurant) throw createError(404, "Restaurante no encontrado");
     
-    // Verificar si el restaurante ya está en los favoritos
+    //  Check if the restaurant is already in favorites
     if (user.favorites.includes(idRestaurant)) {
         throw createError(400, "El restaurante ya está en los favoritos");
         }
     
-        // Agregar el restaurante a los favoritos del usuario
+        //  Add the restaurant to the user's favorites
         user.favorites.push(idRestaurant);
         await user.save();
     
@@ -206,17 +206,17 @@ export const addRestaurantToFavorites = async (idUser, idRestaurant) => {
     }
 };
 
-// Eliminar restaurante de los favoritos del usuario
+//  Remove restaurant from user's favorites
 export const removeRestaurantFromFavorites = async (idUser, idRestaurant) => {
     try {
-        // Verificar si el usuario y el restaurante existen
+        //  Verify if the user and restaurant exist
         const user = await User.findById(idUser);
         if (!user) throw createError(404, "Usuario no encontrado");
     
         const restaurant = await Restaurant.findById(idRestaurant);
         if (!restaurant) throw createError(404, "Restaurante no encontrado");
     
-        // Eliminar el restaurante de los favoritos
+        // Check if the restaurant is in favorites
         user.favorites = user.favorites.filter(favorite => favorite.toString() !== idRestaurant);
         await user.save();
     

@@ -1,5 +1,6 @@
 import { timeRange } from "../models/date.model.js";
 
+// Create a new time range
 export const createTimeRange = async (data) => {
     try {
         const newTimeRange = new timeRange(data);
@@ -10,6 +11,7 @@ export const createTimeRange = async (data) => {
     }
 };
 
+// Get all time ranges
 export const findTimeRangeById = async (id) => {
     try {
         const time = await timeRange.findById(id);

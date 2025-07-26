@@ -3,7 +3,7 @@ import { Restaurant } from "../models/restaurante.model.js";
 import createError from "http-errors";
 
 
-// Crear menú
+// Create a new menu
 export const createMenu = async (restaurantId, plates) => {
     try {
         const newMenu = new Menu({
@@ -11,7 +11,7 @@ export const createMenu = async (restaurantId, plates) => {
         plates
         });
 
-        // Guardar el menú en la base de datos
+        // Add the new menu to the restaurant's idMenu array
         const savedMenu = await newMenu.save();
         return savedMenu;
     } catch (error) {
@@ -20,7 +20,7 @@ export const createMenu = async (restaurantId, plates) => {
 };
 
 
-// Obtener todos los menús
+// Get all menus
 export const getAllMenus = async () => {
     try {
         const menus = await Menu.find();
@@ -30,7 +30,7 @@ export const getAllMenus = async () => {
     }
 };
 
-// Obtener un menú por su ID
+// Get a menu by ID
 export const getMenuById = async (menuId) => {
     try {
         const menu = await Menu.findById(menuId);
@@ -41,7 +41,7 @@ export const getMenuById = async (menuId) => {
     }
 };
 
-// Actualizar un menú por su ID
+// Update a menu by ID
 export const updateMenu = async (menuId, updatedData) => {
     try {
         const updatedMenu = await Menu.findByIdAndUpdate(menuId, updatedData, { new: true });
@@ -52,13 +52,13 @@ export const updateMenu = async (menuId, updatedData) => {
     }
 };
 
-// Eliminar un menú por su ID
+// Delete a menu by ID and remove it from the restaurant
 export const deleteMenu = async (menuId, restaurantId) => {
     try {
         const menu = await Menu.findByIdAndDelete(menuId);
         if (!menu) throw createError(404, "Menú no encontrado");
 
-        // Eliminar el menú del restaurante
+        // Remove the menu from the restaurant's idMenu array
         await Restaurant.findByIdAndUpdate(restaurantId, { $pull: { idMenu: menuId } });
 
         return menu;
@@ -67,7 +67,7 @@ export const deleteMenu = async (menuId, restaurantId) => {
     }
 };
 
-// Obtener todos los menús
+// Get menus by restaurant ID
 export const getMenus = async () => {
         try {
         const menus = await Menu.find();
