@@ -11,19 +11,19 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const menuRouter = Router();
 
-// Crear un menú para un restaurante
+// Create a new menu:D
 menuRouter.post("/create", verifyToken, createMenuController);
 
-// Obtener todos los menús
+// Get all menus:D
 menuRouter.get("/all", getAllMenusController);
 
-// Obtener un menú por ID
+// Get menu by ID:D
 menuRouter.get("/:menuId", getMenuByIdController);
 
-// Actualizar un menú por ID
+// Update menu:D
 menuRouter.put("/:menuId", verifyToken, validateMenuId, updateMenuController);
 
-// Eliminar un menú por ID
+// Delete menu:D
 menuRouter.delete("/:menuId", verifyToken, validateMenuId, deleteMenuController);
 
 export { menuRouter };

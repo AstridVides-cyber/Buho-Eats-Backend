@@ -14,37 +14,37 @@ import { coordinateRouter } from "./coordinate.route.js";
 
 const mainRouter = Router();
 
-// Ruta para los usuarios:D
+// User routes
 mainRouter.use('/api/usuario', userRouter); 
 
-// Ruta para los favoritos de un usuario:D
+// Favorite routes
 mainRouter.use('/api/usuario/:id/favoritos', favoriteRouter); 
 
-// Ruta para restaurantes:D
+// Promotion routes
 mainRouter.use('/api/restaurante', restaurantRouter); 
 
-// Promociones Rutas:D
+// Images routes
 mainRouter.use('/api/restaurante/:restaurantId/promotion', promotionRouter);
 
-// Bloqueo Rutas:D
+// Restaurant routes
 mainRouter.use('/api/restaurante/:restaurantId/bloquear', blockRouter);
 
-// Rutas de reseñas:D
+// Review routes
 mainRouter.use('/api/restaurante/:restaurantId/review', reviewRouter); 
 
-// Agregar rutas de TimeRange:D
+// Additional routes for menus
 mainRouter.use("/api/timeRange", timeRangeRouter); 
 
-// Rutas de coordenadas:D
+// Coordinates routes
 mainRouter.use("/api/coordenadas", coordinateRouter);
 
-// Ruta para el menú de un restaurante
+// Route for menus within a restaurant
 mainRouter.use('/api/restaurante/:restaurantId/menu', menuRouter); 
 
-// Ruta para los platos dentro de un menú
+// Route for plates within a menu
 mainRouter.use('/api/restaurante/:restaurantId/menu/plato', plateRouter);
 
-// Ruta para las imágenes
+// Route for pictures
 mainRouter.use('/api/picture', pictureRouter);
 
 export { mainRouter };

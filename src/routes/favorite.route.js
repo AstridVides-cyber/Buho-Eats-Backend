@@ -7,10 +7,10 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const favoriteRouter = Router();
 
-// Agregar restaurante a favoritos de un usuario
+// Add restaurant to user's favorites
 favoriteRouter.post("/:id/favoritos/add", verifyToken, addRestaurantToFavoritesController);
 
-// Eliminar restaurante de los favoritos de un usuario
+// Remove restaurant from user's favorites
 favoriteRouter.delete("/:id/favoritos/:restaurantId", verifyToken, removeRestaurantFromFavoritesController);
 
 export { favoriteRouter };

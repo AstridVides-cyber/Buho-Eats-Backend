@@ -5,13 +5,13 @@ import {
 } from "../controllers/block.controllers.js";
 import { verifyToken } from "../middlewares/jwt.middleware.js";
 
-// Aquí definimos las rutas
+// Router for blocking and unblocking users
 const blockRouter = Router();
 
-// Bloquear un usuario
+// Block a user
 blockRouter.post("/:id/bloquear/:usuarioId", verifyToken, createBlockController);
 
-// Desbloquear un usuario
+// Unblock a user
 blockRouter.delete("/:restauranteId/desbloquear/:usuarioId", verifyToken, deleteBlockController);
 
 export { blockRouter };

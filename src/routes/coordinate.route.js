@@ -8,10 +8,10 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const coordinateRouter = Router();
 
-// Ruta para crear nuevas coordenadas
+// Route to create a new coordinate
 coordinateRouter.post("/create", verifyToken, validateCoordinate, createCoordinateController);
 
-// Ruta para obtener todas las coordenadas
+// Route to get all coordinates
 coordinateRouter.get("/all", getCoordinatesController);
 
 export { coordinateRouter };

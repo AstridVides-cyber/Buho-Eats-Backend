@@ -16,19 +16,19 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const restaurantRouter = Router();
 
-// Crear restaurante:D
+// Create a new restaurant:D
 restaurantRouter.post("/create", verifyToken, validateCreateRestaurant, createRestaurantController);
 
-// Obtener todos los restaurantes:
+// Get all restaurants:D
 restaurantRouter.get("/all", getRestaurantsController);
 
-// Obtener restaurante por ID:D
+// Get restaurant by ID:D
 restaurantRouter.get("/:id", validateGetRestaurantById, getRestaurantByIdController);
 
-// Actualizar restaurante por ID:D
+//  Update restaurant:D
 restaurantRouter.put("/:id", verifyToken, validateUpdateRestaurant, updateRestaurantController);
 
-// Eliminar restaurante por ID:D
+//  Delete restaurant:D
 restaurantRouter.delete("/:id", verifyToken, validateDeleteRestaurant, deleteRestaurantController);
 
 export { restaurantRouter };

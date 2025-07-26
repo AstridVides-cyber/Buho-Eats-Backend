@@ -14,16 +14,16 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const reviewRouter = Router();
 
-// Crear una reseña:D
+// Create a new review:D
 reviewRouter.post('/create', verifyToken, validateCreateReview, createReviewController);
 
-// Obtener todas las reseñas:D
+// Get all reviews:D
 reviewRouter.get('/all', verifyToken, findAllReviewsController);
 
-// Obtener una reseña por ID :D
+// Get review by ID:D
 reviewRouter.get('/:id', verifyToken, validateGetReviewById, findReviewByIdController);
 
-// Eliminar una reseña por ID :D
+// Delete review:D
 reviewRouter.delete('/:id', verifyToken, validateDeleteReview, deleteReviewController);
 
 export { reviewRouter };

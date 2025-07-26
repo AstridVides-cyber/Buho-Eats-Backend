@@ -16,19 +16,19 @@ import { verifyToken } from "../middlewares/jwt.middleware.js";
 
 const plateRouter = Router();
 
-// Crear un plato
+// Create a new plate:D
 plateRouter.post('/create', verifyToken, validateCreatePlate, createPlateController);
 
-// Obtener todos los platos
+// Get all plates:D
 plateRouter.get('/all', findAllPlatesController);
 
-// Obtener un plato por ID
+// Get plate by ID:D
 plateRouter.get('/:id', validateGetPlateById, findPlateByIdController);
 
-// Actualizar un plato
+// Update plate:D
 plateRouter.put('/:id', verifyToken, validateUpdatePlate, updatePlateController);
 
-// Eliminar un plato
+// Delete plate:D
 plateRouter.delete('/:id', verifyToken, validateDeletePlate, deletePlateController);
 
 export { plateRouter };
