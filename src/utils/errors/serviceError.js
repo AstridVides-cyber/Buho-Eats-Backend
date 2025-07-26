@@ -1,4 +1,4 @@
-//Servicio de error
+// Service Error 
 export class ServiceError extends Error {
     constructor(error) {
         super(`Hubo un error al buscar: ${error.message}`);
