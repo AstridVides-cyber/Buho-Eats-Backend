@@ -9,7 +9,7 @@ export const client = new OAuth2Client(
 );
 
 export const verifyGoogleToken = async (req, res, next) => {
-  //Se obtiene la id del token
+  //If the request does not contain an id_token, throw an error
     const { id_token } = req.body;
 
     if (!id_token)
