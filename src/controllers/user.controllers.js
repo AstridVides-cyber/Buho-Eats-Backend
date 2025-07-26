@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { client } from "../middlewares/auth.middleware.js";
-import { User } from "../models/user.model.js";
 import { Favorite } from "../models/favorite.model.js"; 
 import { 
     saveUser,
@@ -16,7 +15,8 @@ import {
 } from "../services/user.service.js";
 import createError from "http-errors";
 
-// Crear usuario
+
+// Create user controller
 export const createUserController = async (req, res, next) => {
 
     try {
@@ -27,9 +27,9 @@ export const createUserController = async (req, res, next) => {
 
         const userCreated = await saveUser(user, password, picture);
         
-        userCreated.favorites = []; // Inicializa favoritos como un array vacío
+        userCreated.favorites = []; // Initialize favorites array
 
-        // Crear una entrada de favoritos vacía para este usuario
+        // Create an empty favorites entry for this user
         const favorites = new Favorite({ idUser:  userCreated._id, idRestaurant: [] });
         await favorites.save();
 
@@ -40,7 +40,8 @@ export const createUserController = async (req, res, next) => {
     }
 };
 
-// Login con Google
+
+// Login with Google
 export const loginWithGoogleController = async (req, res, next) => {
     const { id_token } = req.body;
     try {
@@ -61,7 +62,8 @@ export const loginWithGoogleController = async (req, res, next) => {
     }
 };
 
-// Generar URL de autorización
+
+// Generate authorization URL
 export const getAuthorizeUrlController = async (req, res, next) => {
     try {
         const authorize = await generateUrlAuthorize();
@@ -73,22 +75,22 @@ export const getAuthorizeUrlController = async (req, res, next) => {
 };
 
 
-// Obteniendo el token
+// Getting the token
 export const generateTokenController = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        // Buscar al usuario por su email
+        // Search for the user by email
         const user = await findUserByEmail(email);
         
-        // Si el usuario no existe, retornar un error de autenticación
+        // If the user does not exist, return an authentication error
         if (!user) {
             throw createError(404, "No se encontró al usuario");
         }
 
-        // Generar el token con la función del servicio
+        // Generate the token with the service function
         const token = await getToken(user, password);
         
-        // Si no se genera el token, retornar un error
+        // If the token is not generated, return an error 
         if (!token) {
             throw createError(401, "No se pudo generar el token de acceso");
         }
@@ -101,6 +103,7 @@ export const generateTokenController = async (req, res, next) => {
         next(error);
     }
 };
+
 
 // Callback de Google
 export const googleCallBackController = async (req, res, next) => {
@@ -141,7 +144,8 @@ export const googleCallBackController = async (req, res, next) => {
         }
 };
 
-// Obtener todos los usuarios
+
+// Get all users
 export const getAllUsersController = async (req, res, next) => {
     try {
         const users = await getAllUsers();
@@ -158,7 +162,8 @@ export const getAllUsersController = async (req, res, next) => {
     }
 };
 
-// Obtener usuario por ID
+
+// Get user by email
 export const getUserByIdController = async (req, res, next) => {
     const { email } = req.body;
     try {
@@ -175,7 +180,8 @@ export const getUserByIdController = async (req, res, next) => {
     }
 };
 
-// Actualizar un usuario por ID
+
+// Update user
 export const updateUserController = async (req, res, next) => {
     const { id } = req.params;
     let userData = req.body;
@@ -196,7 +202,8 @@ export const updateUserController = async (req, res, next) => {
     }
 };
 
-// Eliminar usuario
+
+// Delete user
 export const deleteUserController = async (req, res, next) => {
     try {
         const deletedUser = await deleteUserById(req.params.id);
@@ -206,7 +213,8 @@ export const deleteUserController = async (req, res, next) => {
     }
 };
 
-// Cambiar rol del usuario
+
+// Change user role
 export const changeUserRoleController = async (req, res, next) => {
     try {
         const updatedUser = await changeUserRole(req.params.id, req.body.rol);
@@ -219,7 +227,8 @@ export const changeUserRoleController = async (req, res, next) => {
     }
 };
 
-// Agregar restaurante a favoritos
+
+// Add restaurant to favorites
 export const addRestaurantToFavoritesController = async (req, res, next) => {
     try {
         const updatedUser = await addRestaurantToFavorites(req.params.idUser, req.body.idRestaurant);
@@ -232,7 +241,8 @@ export const addRestaurantToFavoritesController = async (req, res, next) => {
     }
 };
 
-// Eliminar restaurante de favoritos
+
+// Remove restaurant from favorites
 export const removeRestaurantFromFavoritesController = async (req, res, next) => {
     try {
         const updatedUser = await removeRestaurantFromFavorites(req.params.idUser, req.body.idRestaurant);

@@ -2,9 +2,9 @@ import {
     createBlock, 
     deleteBlock 
 } from "../services/block.service.js";
-//import createError from "http-errors";
 
-// Bloquear un usuario
+
+// Block a user
 export const createBlockController = async (req, res, next) => {
     const { id, usuarioId } = req.params;
 
@@ -18,7 +18,7 @@ export const createBlockController = async (req, res, next) => {
     }
 };
 
-// Desbloquear un usuario
+// Unblock a user
 export const deleteBlockController = async (req, res, next) => {
     const { restauranteId, usuarioId } = req.params;
 

@@ -7,6 +7,8 @@ import {
 } from "../services/plate.service.js";
 import createError from "http-errors";
 
+
+// Create plate controller
 export const createPlateController = async (req, res, next) => {
     const platesData = req.body;
 
@@ -19,6 +21,8 @@ export const createPlateController = async (req, res, next) => {
     }
 };
 
+
+// Get all plates controller
 export const findAllPlatesController = async (req, res, next) => {
     try {
     const plates = await findAllPlates();
@@ -30,8 +34,9 @@ export const findAllPlatesController = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
+// Get plate by ID controller
 export const findPlateByIdController = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -45,8 +50,10 @@ export const findPlateByIdController = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
+
+// Update plate controller
 export const updatePlateController = async (req, res, next) => {
     const { id } = req.params;
     const data = req.body;
@@ -64,6 +71,8 @@ export const updatePlateController = async (req, res, next) => {
     }
 };
 
+
+// Delete plate controller
 export const deletePlateController = async (req, res, next) => {
     const { id } = req.params;
 

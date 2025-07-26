@@ -9,11 +9,7 @@ import {
 } from "../services/picture.service.js";
 import createError from "http-errors";
 
-//Para obtener las rutas
-//const __filename = fileURLToPath(import.meta.url);
-//const __dirname = dirname(__filename);
-
-//Crear la imagen
+//Create picture controller
 export const createPictureController = async (req, res, next) => {
     const { url } = req.body;
     const { idRestaurant } = req.params;
@@ -33,7 +29,8 @@ export const createPictureController = async (req, res, next) => {
     }
 };
 
-//Agrega imagen
+
+//Add pictures to restaurant
 export const addPicturesController = async (req, res, next) => {
     try {
         const { id, url } = req.body;
@@ -44,7 +41,6 @@ export const addPicturesController = async (req, res, next) => {
 
         let picturesToAdd = [];
 
-        // URLs/base64 proporcionadas
         if (url && Array.isArray(url)) {
             picturesToAdd.push(...url);
         }
@@ -56,6 +52,7 @@ export const addPicturesController = async (req, res, next) => {
         next(error);
     }
 };
+
 
 //Remover imagen
 export const removePicturesController = async (req, res, next) => {
@@ -82,7 +79,8 @@ export const removePicturesController = async (req, res, next) => {
     }
 };
 
-//Obtener imagenes
+
+//Get all pictures
 export const getPicturesController = async (req, res, next) => {
     try {
         const pictures = await findAllPictures();
@@ -96,7 +94,8 @@ export const getPicturesController = async (req, res, next) => {
     }
 };
 
-//Obtener las imagenes
+
+//Get picture by ID
 export const findPictureByIdController = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -111,7 +110,8 @@ export const findPictureByIdController = async (req, res, next) => {
     }
 };
 
-//Eliminar imagen
+
+// Delete picture by ID
 export const deletePictureController = async (req, res, next) => {
     try {
         const { id } = req.body;

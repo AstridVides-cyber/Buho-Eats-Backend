@@ -1,4 +1,3 @@
-import createError from "http-errors";
 import { 
     createMenu, 
     getAllMenus,
@@ -9,15 +8,15 @@ import {
 } from "../services/menu.service.js";
 
 
-// Controlador para crear un menú
+// Create menu controller
 export const createMenuController = async (req, res, next) => {
     const { restaurantId, plates } = req.body;
 
     try {
-        // Llamar al servicio para crear el menú
+        // Call the service to create a new menu
         const newMenu = await createMenu(restaurantId, plates);
 
-        // Responder con el menú creado
+        // Return the created menu with a success message
         res.status(201).json({
         message: "Menú creado con éxito",
         data: newMenu
@@ -28,7 +27,7 @@ export const createMenuController = async (req, res, next) => {
 };
 
 
-// Obtener todos los menús
+// Get all menus controller
 export const getAllMenusController = async (req, res, next) => {
     try {
         const menus = await getAllMenus();
@@ -41,7 +40,8 @@ export const getAllMenusController = async (req, res, next) => {
     }
 };
 
-// Obtener un menú por su ID
+
+// Get menus by restaurant ID
 export const getMenuByIdController = async (req, res, next) => {
     const { menuId } = req.params;
 
@@ -56,7 +56,8 @@ export const getMenuByIdController = async (req, res, next) => {
     }
 };
 
-// Actualizar un menú por su ID
+
+// Update menu controller
 export const updateMenuController = async (req, res, next) => {
     const { menuId } = req.params;
     const updatedData = req.body;
@@ -72,10 +73,11 @@ export const updateMenuController = async (req, res, next) => {
     }
 };
 
-// Eliminar un menú por su ID
+
+// Delete menu controller
 export const deleteMenuController = async (req, res, next) => {
     const { menuId } = req.params;
-    const { restaurantId } = req.body;  // El ID del restaurante donde se encuentra el menú
+    const { restaurantId } = req.body;  // Assuming restaurantId is needed for deletion
 
     try {
         await deleteMenu(menuId, restaurantId);
@@ -88,7 +90,8 @@ export const deleteMenuController = async (req, res, next) => {
     }
 };
 
-//get menus
+
+// Get all menus
 export const getMenusController = async (req, res, next) => {
     try {
         const menus = await getMenus(); 

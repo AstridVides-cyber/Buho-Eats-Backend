@@ -6,7 +6,7 @@ import {
 } from "../services/review.service.js";
 import createError from "http-errors";
 
-// Crear reseña
+// Create review controller
 export const createReviewController = async (req, res, next) => {
     const { comment, stars, idUser, idrestaurant } = req.body;
 
@@ -18,7 +18,7 @@ export const createReviewController = async (req, res, next) => {
     }
 };
 
-// Obtener todas las reseñas
+// Get all reviews controller
 export const findAllReviewsController = async (req, res, next) => {
     try {
         const reviews = await findAllReviews();
@@ -29,7 +29,7 @@ export const findAllReviewsController = async (req, res, next) => {
     }
 };
 
-// Obtener reseña por ID
+// Get review by ID controller
 export const findReviewByIdController = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -41,7 +41,7 @@ export const findReviewByIdController = async (req, res, next) => {
     }
 };
 
-// Eliminar reseña
+// Delete review controller
 export const deleteReviewController = async (req, res, next) => {
     const { id } = req.params;
 

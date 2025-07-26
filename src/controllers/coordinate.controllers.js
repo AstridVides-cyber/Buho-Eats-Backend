@@ -2,9 +2,9 @@ import {
     createCoordinate, 
     findCoordinates 
 } from "../services/coordinate.service.js";
-//import createError from "http-errors";
 
-// Crear Coordenadas
+
+// Create coordinate controller
 export const createCoordinateController = async (req, res, next) => {
     const { lat, lng } = req.body;
 
@@ -16,7 +16,7 @@ export const createCoordinateController = async (req, res, next) => {
     }
 };
 
-// Obtener todas las coordenadas
+// Get all coordinates controller
 export const getCoordinatesController = async (req, res, next) => {
     try {
         const coordinates = await findCoordinates();

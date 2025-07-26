@@ -1,7 +1,7 @@
 import { timeRange } from "../models/date.model.js";
 import createError from "http-errors";
 
-// Crear un rango de tiempo
+// Create time range controller
 export const createTimeRangeController = async (req, res, next) => {
     const { from, to } = req.body;
 
@@ -18,7 +18,7 @@ export const createTimeRangeController = async (req, res, next) => {
     }
 };
 
-// Encontrar un timeRange por ID
+// Get all time ranges controller
 export const findTimeRangeByIdController = async (req, res, next) => {
     const { id } = req.params;
 

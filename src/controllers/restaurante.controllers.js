@@ -5,10 +5,8 @@ import {
     updateRestaurantById, 
     deleteRestaurantById 
 } from "../services/restaurante.service.js";
-//import { Picture } from "../models/picture.model.js"; 
-//import createError from "http-errors";
 
-// Crear restaurante
+// Create restaurant controller
 export const createRestaurantController = async (req, res, next) => {
     try {
         const restaurantData = req.body;
@@ -19,7 +17,7 @@ export const createRestaurantController = async (req, res, next) => {
     }
 };
 
-// Obtener restaurante por ID
+// Get restaurant by ID
 export const getRestaurantByIdController = async (req, res, next) => {
     try {
         const restaurant = await findRestaurantById(req.params.id);
@@ -29,7 +27,7 @@ export const getRestaurantByIdController = async (req, res, next) => {
     }
 };
 
-// Obtener todos los restaurantes
+// Get all restaurants
 export const getRestaurantsController = async (req, res, next) => {
     try {
         const restaurants = await getRestaurants();
@@ -39,7 +37,7 @@ export const getRestaurantsController = async (req, res, next) => {
     }
 };
 
-// Actualizar restaurante por ID
+// Update restaurant by ID
 export const updateRestaurantController = async (req, res, next) => {
     try {
         const updatedRestaurant = await updateRestaurantById(req.params.id, req.body);
@@ -49,7 +47,7 @@ export const updateRestaurantController = async (req, res, next) => {
     }
 };
 
-// Eliminar restaurante por ID
+// Delete restaurant by ID
 export const deleteRestaurantController = async (req, res, next) => {
     try {
         await deleteRestaurantById(req.params.id);

@@ -7,7 +7,7 @@ import {
 } from "../services/promotion.service.js";
 import createError from "http-errors";
 
-// Crear promoción
+// Create promotion controller
 export const createPromotionController = async (req, res, next) => {
     try {
         const newPromotion = await createPromotion(req.body);
@@ -17,7 +17,7 @@ export const createPromotionController = async (req, res, next) => {
     }
 };
 
-// Obtener todas las promociones de un restaurante
+// Get promotions by restaurant ID
 export const getPromotionsController = async (req, res, next) => {
     const { restaurantId } = req.params;
     try {
@@ -28,7 +28,7 @@ export const getPromotionsController = async (req, res, next) => {
     }
 };
 
-// Obtener promoción por ID
+// Get promotion by ID
 export const getPromotionByIdController = async (req, res, next) => {
     const { promotionId } = req.params;
     try {
@@ -40,7 +40,7 @@ export const getPromotionByIdController = async (req, res, next) => {
     }
 };
 
-// Actualizar promoción
+// Update promotion
 export const updatePromotionController = async (req, res, next) => {
     const { promotionId } = req.params;
     try {
@@ -52,7 +52,7 @@ export const updatePromotionController = async (req, res, next) => {
     }
 };
 
-// Eliminar promoción
+// Delete promotion
 export const deletePromotionController = async (req, res, next) => {
     const { promotionId } = req.params;
     try {

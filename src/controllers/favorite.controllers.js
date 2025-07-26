@@ -1,24 +1,24 @@
 import { Favorite } from "../models/favorite.model.js";
 import createError from "http-errors";
 
-// Crear un nuevo favorito
+// Create a new favorite controller
 export const addRestaurantToFavoritesController = async (req, res, next) => {
     const { id } = req.params; 
     const { idRestaurant } = req.body; 
 
     try {
-        // Verificamos si ya existe un favorito para este usuario
+        // Check if the user exists
         let favorite = await Favorite.findOne({ idUser: id });
 
         if (!favorite) {
-            // Si no existe, creamos uno nuevo
+            // If the user does not have a favorite entry, create one
             favorite = new Favorite({
                 idUser: id,
                 idRestaurant: [idRestaurant],
             });
             await favorite.save();
         } else {
-            // Si ya existe, solo agregamos el restaurante
+            // If the user already has a favorite entry, check if the restaurant is already in favorites
             if (!favorite.idRestaurant.includes(idRestaurant)) {
                 favorite.idRestaurant.push(idRestaurant);
                 await favorite.save();
@@ -31,7 +31,8 @@ export const addRestaurantToFavoritesController = async (req, res, next) => {
     }
 };
 
-// Eliminar un restaurante de los favoritos
+
+// Remove restaurant from favorites controller
 export const removeRestaurantFromFavoritesController = async (req, res, next) => {
     const { id, restaurantId } = req.params; 
 
@@ -42,7 +43,7 @@ export const removeRestaurantFromFavoritesController = async (req, res, next) =>
             throw createError(404, "No se encontraron favoritos para este usuario");
         }
 
-        // Eliminamos el restaurante de los favoritos
+        //  Check if the restaurant is in favorites
         favorite.idRestaurant = favorite.idRestaurant.filter(
             (restaurant) => restaurant.toString() !== restaurantId
         );
