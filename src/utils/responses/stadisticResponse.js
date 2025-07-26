@@ -1,3 +1,4 @@
+// Response para estadísticas de un producto
 export default class StadisticResponse {
     constructor(views, reviews, favorites, qualification) {
         this.views = views;
