@@ -11,6 +11,7 @@ const storage = multer.diskStorage({
     }
 });
 
+
 // File filter to allow only specific file types
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -20,6 +21,7 @@ const fileFilter = (req, file, cb) => {
         cb(new Error('Formato de archivo no permitido'), false);
     }
 };
+
 
 // Export the multer upload middleware
 export const upload = multer({

@@ -2,12 +2,14 @@ import { OAuth2Client } from "google-auth-library";
 import createError from 'http-errors';
 import "dotenv/config";
 
+// Google OAuth2 client configuration
 export const client = new OAuth2Client(
     process.env.CLIENT_ID,
     process.env.CLIENT_SECRET,
     process.env.REDIRECT_URI_1
 );
 
+// Middleware to verify Google ID token
 export const verifyGoogleToken = async (req, res, next) => {
   //If the request does not contain an id_token, throw an error
     const { id_token } = req.body;
