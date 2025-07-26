@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 
+// Helper para validar imágenes (base64 o URL)
 export const validateResult = (req, res, next) => {
     try {
 

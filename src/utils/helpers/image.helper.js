@@ -1,6 +1,6 @@
 // Helper para validar imágenes (base64 o URL)
 
-// Regex para URLs de imágenes
+// Regex para URL de imágenes
 const URL_REGEX = /^https?:\/\/.*\.(jpg|jpeg|png|gif|webp)$/i;
 
 // Regex para base64 de imágenes
